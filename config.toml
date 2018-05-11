@@ -1,0 +1,42 @@
+baseurl = "https://gyukebox.github.io/"
+theme = "cocoa-eh"
+builddrafts = true
+canonifyurls = true
+contentdir = "content"
+languageCode = "ko-KR"
+layoutdir = "layouts"
+publishdir = "public"
+author = "Byeong Gyu Choi"
+title = "GyuLog"
+disqusshortname = ""
+pluralizelisttitles = false
+
+[permalinks]
+blog = "blog/:slug/"
+
+[params]
+dateform = "Jan 2, 2006"
+dateformfull = "Mon Jan 2 2006 15:04:05 MST"
+description = "규크박스의 몽상"
+copyright = "Copyright © 2017 Byeong Gyu Choi"
+# copyrightUrl = "https://creativecommons.org/licenses/by-sa/4.0/"
+logofile = "img/profile.jpg"
+faviconfile = "img/profile.jpg"
+highlightjs = true
+progressively = true
+share = true
+# Share to googleplus, twitter, fb, linkedin by default
+# disable by setting share_on_<social network> = false
+# example: share_on_googleplus = false
+latestpostcount = 5
+github = "gyukebox"
+email = "bisschoi9541@gmail.com"
+linkedin = "병규-최-43290213b"
+# twitter = "example"
+facebook = "gyukebox"
+# social_banner = "img/banner.png"
+usesmallsummarycard = true
+posts_navigation = true
+# issoHost = "comments.domain.tld:1234"
+githubRepo = "gyukebox/gyukebox.github.io/tree/master"
+small_banner_logo = false
