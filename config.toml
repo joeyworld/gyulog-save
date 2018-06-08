@@ -17,7 +17,7 @@ blog = "blog/:slug/"
 [params]
 dateform = "Jan 2, 2006"
 dateformfull = "Mon Jan 2 2006 15:04:05 MST"
-description = "장고를 사랑하는 파이썬 백엔드 개발자의 몽상로그"
+description = "배워서 남 주기를 좋아하는, 리액트와 장고를 사랑하는 웹 개발자의 몽상로그"
 copyright = "Copyright © 2017 Byeong Gyu Choi"
 # copyrightUrl = "https://creativecommons.org/licenses/by-sa/4.0/"
 logofile = "img/profile.jpg"
