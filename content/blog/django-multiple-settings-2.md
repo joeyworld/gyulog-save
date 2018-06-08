@@ -137,7 +137,8 @@ DATABASE_LIST = {
 DATABASES = DATABASE_LIST[ENV]
 ```
 
-위와 같이 작성하면, 현재 이 프로젝트가 처한 환경에 따라 데이터베이스 설정을 자동으로 가져오게 된다.
+위와 같이 작성하면, 현재 이 프로젝트가 처한 환경에 따라 데이터베이스 설정을 자동으로 가져오게 된다.  
+(민감한 username, password 등의 개인 정보는 알아서 환경변수로 잘 대체해주자)
 
 오류가 뜨더라도 놀라지 마시라. `ENV` 이라는 변수를 아직 안 만들었기 때문이다.  
 나중에 통합 스크립트에서 설정할 예정이므로 에러는 무시하고 넘어가자.
@@ -200,7 +201,7 @@ WSGI_APPLICATION = '<PROJECT_NAME>.wsgi.application'
 
 ## 환경별 설정 분리
 
-환경별로 설정으 분리해야 하는 항목은 `DEBUG`, 그리고 `ALLOWED_HOSTS` 이 둘이 있다.  
+환경별로 설정을 분리해야 하는 항목은 `DEBUG`, 그리고 `ALLOWED_HOSTS` 이 둘이 있다.  
 (데이터베이스 설정도 여기서 해도 되지만 여기서는 그렇게 하지 않았다. 어떤 방식을 사용해도 상관없다.)
 
 먼저, `environmens` 디렉토리에 `dev.py` 파일을 만들고, 개발 환경에서의 설정을 하자.
@@ -281,7 +282,7 @@ from split_settings.tools import include
 
 COMPONENTS_DIR = os.path.join(
     BASE_DIR,
-    'timbre_server',
+    'PROJECT_NAME',
     'settings',
     'components'
 )
