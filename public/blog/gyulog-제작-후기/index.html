@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description" content="Django, Node, React를 합니다. 머신러닝, 특히 NLP에 관심이 매우 많습니다.">
+
+
+<meta property="og:site_name" content="JoeyLog" />
+<meta property="og:locale" content="ko-KR" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joeyworld.github.io/blog/gyulog-%EC%A0%9C%EC%9E%91-%ED%9B%84%EA%B8%B0/" />
+<meta property="og:title" content="GyuLog 제작 후기" />
+<meta property="twitter:title" content="GyuLog 제작 후기">
+
+    <meta property="twitter:card" content="summary">
+
+<meta property="og:description" content="">
+<meta property="twitter:description" content="">
+
+<title>
+
+
+     JoeyLog - GyuLog 제작 후기 
+
+</title>
+<link rel="canonical" href="https://joeyworld.github.io/blog/gyulog-%EC%A0%9C%EC%9E%91-%ED%9B%84%EA%B8%B0/">
+
+
+<style media="screen">
+  @font-face {
+  font-family: 'Nexa Bold';
+  src: url('https://joeyworld.github.io/fonts/Nexa Bold.otf');
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, div.column {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+a,
+a:visited,
+a:focus,
+a:active {
+  text-decoration: none;
+}
+html {
+  height: 100%;
+  font-size: 16px;
+}
+body {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 100%;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  color: #111111;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility !important;
+}
+.icon {
+  text-rendering: geometricPrecision !important;
+}
+section {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  width: 100%;
+}
+div.column {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  width: 100%;
+}
+.container {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  width: 100%;
+}
+div.header .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+}
+div.header .content {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.header .container .logo {
+  
+  max-width: 100px;
+  
+  margin-left: -2em;
+}
+div.header .name {
+  padding-top: 20px;
+  font-size: 28px;
+  font-family: 'Nexa Bold', 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  
+  text-transform: uppercase;
+  
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+}
+div.header nav {
+  margin-bottom: 16px;
+}
+div.header nav ul {
+  list-style: none;
+  text-align: center;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flexbox;
+  display: -ms-inline-flex;
+  display: inline-flex;
+}
+div.header nav ul li {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+div.header nav ul li:first-child {
+  margin-left: 0;
+}
+div.header nav ul li:last-child {
+  margin-right: 0;
+}
+div.header nav ul a {
+  color: #555555;
+  font-weight: 400;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  -webkit-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.header nav ul a:hover {
+  color: #111111;
+}
+div.footer .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+  width: 100%;
+  text-align: center;
+}
+div.footer .container a {
+  font-size: 14px;
+  margin-left: 6px;
+  margin-right: 6px;
+  opacity: 0.6;
+  -webkit-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.footer .container a:first-child {
+  margin-left: 0;
+}
+div.footer .container a:last-child {
+  margin-right: 0;
+}
+div.footer .container a:hover {
+  opacity: 0.8;
+}
+div.footer .container a .icon {
+  width: 16px;
+  height: 16px;
+}
+div.footer .container .copyright {
+  flex-grow: 0.5;
+  text-align: start;
+}
+div.footer .container .icons {
+  flex-grow: 0.5;
+  text-align: end;
+}
+div.main .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  justify-content: flex-start;
+}
+div.main .content {
+  color: #111111;
+  font-size: 16px;
+}
+div.main .content .title-container {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+}
+div.main .content .posts {
+  
+  
+}
+div.main .content .page-heading {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  text-transform: uppercase;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+  margin-bottom: 16px;
+}
+div.main .content .front-matter .page-heading {
+  margin-bottom: 0;
+}
+div.main .content .front-matter .meta {
+  font-size: 14px;
+  color: #666666;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  margin-bottom: 32px;
+}
+div.main .content .front-matter .date,
+div.main .content .front-matter .author,
+div.main .content .front-matter .tags,
+div.main .content .front-matter .word-count,
+div.main .content .front-matter .middot:before {
+  display: none;
+}
+div.main .content .front-matter .middot:before {
+  font-size: 6px;
+  margin: 0 6px;
+  vertical-align: middle;
+  content: "•";
+}
+div.main .content .front-matter .tags ul {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.main .content .front-matter .tags ul li {
+  -webkit-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.main .content .front-matter .tags ul li:hover {
+  opacity: 0.7;
+}
+div.main .content .front-matter .tags ul li a {
+  color: #666666;
+}
+
+div.main .container.f04 {
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+}
+div.main .container.f04 .content {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.main .container.f04 .content .num {
+  margin: 30px 0px 30px 0;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 50px;
+}
+div.main .container.f04 .content .detail {
+  margin-bottom: 40px;
+}
+div.main .container .content .groupby {
+  margin-top: 1em;
+  padding-left: 0.5em;
+}
+div.main .container .content .post-item {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  display: list-item;
+  list-style: disc inside;
+}
+div.main .container .content .post-item .meta {
+  font-size: 14px;
+  color: #666666;
+  display: none;
+  min-width: 100px;
+}
+div.main .container .content .see-more {
+  font-style: italic;
+  float: right;
+  font-size: 0.9em;
+  margin-top: 2em;
+  color: #313537;
+}
+div.main .container .content .see-more:hover {
+  color: #666;
+}
+section {
+  padding: 0 16px;
+}
+div.column {
+  padding: 0 16px;
+}
+div.header {
+  padding-top: 10px;
+}
+div.header-home {
+  padding-top: 36px;
+}
+div.main {
+  padding-top: 32px;
+}
+div.main .container .content .post-item .meta {
+    display: block;
+}
+div.main .container .content .post-item {
+    display: flex;
+    list-style: none;
+}
+a {
+  color: #428bca;
+  -webkit-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+a:hover {
+  color: #2a6496;
+}
+img {
+  max-width: 100%;
+}
+div.main .content {
+    width: 100%;
+}
+div.main .content .markdown {
+  font-size: 1.1em;
+  line-height: 1.75em;
+  color: #313537;
+  font-family: serif;
+  font-weight: 300;
+}
+div.main .content .markdown h1,
+div.main .content .markdown h2,
+div.main .content .markdown h3,
+div.main .content .markdown h4,
+div.main .content .markdown h5,
+div.main .content .markdown h6 {
+  font-size: 22px;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  font-weight: 700;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+  text-transform: none;
+  margin-top: 1.75rem;
+}
+div.main .content .markdown h1 {
+  font-size: 1.75rem;
+  margin-bottom: 2rem;
+}
+div.main .content .markdown h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+div.main .content .markdown h3 {
+  font-size: 1em;
+  margin-bottom: 1rem;
+}
+div.main .content .markdown h4,
+div.main .content .markdown h5,
+div.main .content .markdown h6 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  letter-spacing: none;
+}
+div.main .content .markdown code,
+div.main .content .markdown pre {
+  font-family: 'Menlo', monospace;
+  font-size: 0.98rem;
+  background-color: #f7f7f7;
+}
+div.main .content .markdown code {
+  /* enclosed by single backtick (`) */
+  padding: .15em .5em;
+  border-radius: 2px;
+}
+div.main .content .markdown pre {
+  /* Hugo specific: consider using the 'highlight' shortcode */
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  line-height: 1.5em;
+  white-space: pre;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+div.main .content .markdown pre code {
+  /* enclosed by 4 backticks (````) */
+  padding: 0;
+  font-size: 0.9rem;
+}
+div.main .content .markdown a code {
+  color: #428bca !important;
+}
+div.main .content .markdown a code:hover {
+  text-decoration: underline;
+}
+div.main .content .markdown p {
+  
+  text-align: justify;
+  
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+div.main .content .markdown ul,
+div.main .content .markdown ol,
+div.main .content .markdown dl {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+div.main .content .markdown dt {
+  font-weight: bold;
+}
+div.main .content .markdown dd {
+  margin-bottom: .5rem;
+}
+div.main .content .markdown ul {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin-bottom: 1.25rem;
+}
+div.main .content .markdown ol {
+  list-style-type: decimal;
+  margin-bottom: 1.25rem;
+}
+div.main .content .markdown li {
+  margin-left: 2em;
+}
+div.main .content .markdown em {
+  font-style: italic;
+}
+div.main .content .markdown strong {
+  font-weight: 700;
+}
+div.main .content .markdown hr {
+  position: relative;
+  margin: 1.75rem 0;
+  border: 0;
+  border-top: 1px solid #808080;
+  border-top: 1px solid #999999;
+}
+div.main .content .markdown abbr {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #666666;
+  text-transform: uppercase;
+}
+div.main .content .markdown abbr[title] {
+  cursor: help;
+  border-bottom: 1px dotted #808080;
+}
+div.main .content .markdown blockquote {
+  padding: .5rem 1rem;
+  margin: .8rem 0;
+  color: #7a7a7a;
+  border-left: .25rem solid #e5e5e5;
+}
+div.main .content .markdown blockquote p:last-child {
+  margin-bottom: 0;
+}
+div.main .content .markdown figure {
+  width: 100%;
+  background: #fff;
+  margin-bottom: 1em;
+}
+div.main .content .markdown figure img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  position: static;
+  margin: auto;
+}
+div.main .content .markdown table {
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  border-collapse: collapse;
+}
+div.main .content .markdown td,
+div.main .content .markdown th {
+  padding: .25rem .5rem;
+  border: 1px solid #e5e5e5;
+}
+div.main .content .markdown tbody tr:nth-child(odd) td,
+div.main .content .markdown tbody tr:nth-child(odd) th {
+  background-color: #f7f7f7;
+}
+div.main .content .markdown .footnotes ol {
+  list-style-type: decimal;
+  margin-left: 16px;
+}
+div.main .content .markdown .footnotes li {
+  list-style-type: unset;
+}
+div.main .content .markdown .footnote-ref {
+  font-size: 0.7em;
+}
+div.main .content .navigation {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  padding: 2em;
+}
+div.main .content .navigation div {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  margin-top: 1em;
+}
+div.main .content .navigation .icon {
+  width: 16px;
+  height: 16px;
+}
+div.main .content .navigation a {
+  width: 250px;
+  margin: 0 1em;
+  text-align: center;
+  font-style: italic;
+  color: #313537;
+}
+div.main .content .share, div.main .content .share div {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  justify-content: center;
+}
+div.main .content .share {
+  background-color: rgba(152, 152, 152, 0.07);
+  padding: 1em 0;
+}
+div.main .content .share a {
+  margin: 0 6px;
+}
+kbd {
+  padding: 0.1em 0.6em;
+  border: 1px solid #ccc;
+  font-size: 11px;
+  font-family: Arial,Helvetica,sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  -moz-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  -webkit-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  margin: 0 0.1em;
+  text-shadow: 0 1px 0 #fff;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* Fonts */
+
+
+.wf-raleway-n4-active body, 
+.wf-raleway-n4-active div.header nav ul a,
+.wf-raleway-n7-active div.main .content .page-heading,
+.wf-raleway-n2-active div.main .container.f04 .content .num,
+.wf-raleway-n7-active div.main .content .markdown h1,
+.wf-raleway-n7-active div.main .content .markdown h2,
+.wf-raleway-n7-active div.main .content .markdown h3,
+.wf-raleway-n7-active div.main .content .markdown h4,
+.wf-raleway-n7-active div.main .content .markdown h5,
+.wf-raleway-n7-active div.main .content .markdown h6 {
+      font-family: 'Raleway';
+}
+
+.wf-merriweather-n3-active div.main .content .markdown {
+      font-family: 'Merriweather';
+}
+
+.wf-ubuntu-mono-n4-active div.main .content .markdown code,
+.wf-ubuntu-mono-n4-active div.main .content .markdown pre {
+      font-family: 'Ubuntu Mono';
+}
+
+
+</style>
+<style media="(min-width: 600px)">
+  body {
+-webkit-justify-content: center;
+-moz-justify-content: center;
+-ms-justify-content: center;
+justify-content: center;
+}
+.non-narrow.zero-top-spacing {
+padding-top: 0 !important;
+}
+section {
+padding: 0 16px;
+margin-left: 100px;
+margin-right: 100px;
+
+max-width: 750px;
+
+}
+div.column {
+padding: 0 16px;
+
+max-width: 750px;
+
+}
+div.header {
+background-color: transparent;
+}
+div.header .container {
+-webkit-justify-content: flex-start;
+-moz-justify-content: flex-start;
+-ms-justify-content: flex-start;
+justify-content: flex-start;
+}
+div.header .container .logo {
+margin: 0;
+}
+div.header-home .container .logo {
+max-width: 216px;
+margin-left: 24px;
+}
+div.header-home .name-home {
+padding-top: 30px;
+font-size: 40px;
+}
+div.header-home nav ul a {
+font-size: 18px;
+}
+div.header .content {
+-webkit-align-items: flex-start;
+-moz-align-items: flex-start;
+-ms-align-items: flex-start;
+align-items: flex-start;
+}
+div.header .name {
+color: #333333;
+}
+div.header nav {
+font-size: 14px;
+margin-bottom: 0;
+}
+div.header nav ul {
+text-align: left;
+}
+div.header nav ul a {
+color: #666666;
+}
+div.header nav ul a:hover {
+color: #333333;
+}
+div.footer {
+background-color: transparent;
+}
+div.footer .container {
+flex-direction: row;
+}
+div.footer .container a {
+margin-left: 3px;
+margin-right: 3px;
+color: #666666;
+}
+div.footer .container a:hover {
+color: #333333;
+}
+div.footer .container a .icon {
+font-size: 18px;
+}
+div.footer .container a .icon.larger {
+font-size: 20px;
+}
+div.main .content .front-matter .date,
+div.main .content .front-matter .author,
+div.main .content .front-matter .tags,
+div.main .content .front-matter .word-count,
+div.main .content .front-matter .middot:before {
+display: initial;
+}
+div.main .container.f04 {
+-webkit-justify-content: flex-start;
+-moz-justify-content: flex-start;
+-ms-justify-content: flex-start;
+justify-content: flex-start;
+}
+div.main .container.f04 .content {
+-webkit-align-items: flex-start;
+-moz-align-items: flex-start;
+-ms-align-items: flex-start;
+align-items: flex-start;
+}
+div.main .container.f04 .content .num {
+margin: 0 0 10px 0;
+font-size: 32px;
+}
+div.main .container.f04 .content .detail {
+margin-bottom: 30px;
+}
+.container {
+padding: 0 30px;
+}
+div.header {
+padding-top: 60px;
+padding-bottom: 60px;
+}
+div.footer {
+padding-top: 60px;
+padding-bottom: 60px;
+}
+div.main {
+padding-top: 0;
+}
+div.main .content {
+  
+  font-size: 16px;
+  
+}
+div.main .container .content .post-item {
+display: flex;
+list-style: none;
+padding-left: 1.5em;
+}
+div.main .container .content .post-item .meta {
+display: block;
+}
+div.main .content .markdown blockquote {
+padding-right: 5rem;
+padding-left: 1.25rem;
+}
+div.main .content .navigation {
+-webkit-flex-direction: row;
+-moz-flex-direction: row;
+-ms-flex-direction: row;
+flex-direction: row;
+}
+div.main .content .navigation div {
+margin-top: 0em;
+}
+
+</style>
+<style media="(min-width: 769px)">
+  div.main .content .markdown figure {
+width: 110%;
+margin-left: -4%;
+}
+div.main .content .markdown img {
+max-width: 110%;
+width: 110%;
+margin-left: -4%;
+}
+div.main .content .markdown pre {
+width: 110%;
+margin-left: -4%;
+}
+
+</style>
+
+<noscript>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700" rel="stylesheet">
+</noscript>
+
+
+  <style type="text/css" media="screen">
+    .hljs{display:block;background:white;padding:0.5em;color:#333333;overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}
+  </style>
+
+
+
+  <style type="text/css" media="screen">
+    .progressive{overflow:hidden;position:relative;background:#efefef}.progressive__img{width:100%;height:100%;transform:translateZ(0)}.progressive--not-loaded{filter:blur(30px)}.progressive--is-loaded{filter:blur(20px);animation:a .5s both}@keyframes a{0%{filter:blur(20px)}to{filter:blur(0)}}
+
+  </style>
+
+
+
+  <style type="text/css" media="screen">
+    /*!
+ * Social Share Kit v1.0.7 (http://socialsharekit.com)
+ * Copyright 2015 Social Share Kit / Kaspars Sprogis.
+ * Licensed under Creative Commons Attribution-NonCommercial 3.0 license:
+ * https://github.com/darklow/social-share-kit/blob/master/LICENSE
+ * ---
+ */@font-face{font-family:'social-share-kit';src:url('https://joeyworld.github.io/fonts/social-share-kit.eot');src:url('https://joeyworld.github.io/fonts/social-share-kit.eot?#iefix') format('embedded-opentype'),url('https://joeyworld.github.io/fonts/social-share-kit.woff') format('woff'),url('https://joeyworld.github.io/fonts/social-share-kit.ttf') format('truetype'),url('https://joeyworld.github.io/fonts/social-share-kit.svg#social-share-kit') format('svg');font-weight:normal;font-style:normal}.ssk:before{display:inline-block;font-family:"social-share-kit" !important;font-style:normal !important;font-weight:normal !important;font-variant:normal !important;text-transform:none !important;speak:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.ssk-facebook:before{content:"a";text-indent:4px;margin-right:-4px}.ssk-twitter:before{content:"b"}.ssk-google-plus:before{content:"v"}.ssk-google-plus-old:before{content:"c"}.ssk-email:before{content:"d";top:-1px;position:relative}.ssk-pinterest:before{content:"e"}.ssk-tumblr:before{content:"f"}.ssk-linkedin:before{content:"g"}.ssk-github:before{content:"h"}.ssk-vk:before{content:"i"}.ssk-instagram:before{content:"j"}.ssk-amazon:before{content:"k"}.ssk-skype:before{content:"s"}.ssk-youtube:before{content:"x"}.ssk-vimeo:before{content:"u"}.ssk-ebay:before{content:"p"}.ssk-apple:before{content:"l"}.ssk-behance:before{content:"q"}.ssk-dribble:before{content:"n"}.ssk-android:before{content:"o"}.ssk-whatsapp:before{content:"m"}.ssk-reddit:before{content:"r"}.ssk-reddit2:before{content:"t"}.ssk-link:before{content:"w"}.ssk{background-color:#757575;color:white;display:inline-block;font-size:22px;line-height:1px;margin-right:2px;margin-bottom:2px;padding:7px;text-align:center;text-decoration:none;transition:background-color .1s;-webkit-transition:background-color .1s;-moz-transition:background-color .1s;-ms-transition:background-color .1s;-o-transition:background-color .1s}.ssk:before,.ssk .glyphicon,.ssk .fa{position:relative;font-size:22px;top:0;vertical-align:middle}.ssk.ssk-xs,.ssk-xs>.ssk{padding:4px}.ssk.ssk-xs:before,.ssk-xs>.ssk:before,.ssk.ssk-xs .glyphicon,.ssk-xs>.ssk .glyphicon,.ssk.ssk-xs .fa,.ssk-xs>.ssk .fa{font-size:15px}.ssk.ssk-sm,.ssk-sm>.ssk{padding:5px}.ssk.ssk-sm:before,.ssk-sm>.ssk:before,.ssk.ssk-sm .glyphicon,.ssk-sm>.ssk .glyphicon,.ssk.ssk-sm .fa,.ssk-sm>.ssk .fa{font-size:20px}.ssk.ssk-lg,.ssk-lg>.ssk{padding:9px}.ssk.ssk-lg:before,.ssk-lg>.ssk:before,.ssk.ssk-lg .glyphicon,.ssk-lg>.ssk .glyphicon,.ssk.ssk-lg .fa,.ssk-lg>.ssk .fa{font-size:28px}.ssk:last-child{margin-right:0}.ssk:hover{background-color:#424242}.ssk:hover,.ssk:focus{color:#fff;text-decoration:none}.ssk.ssk-round,.ssk-round .ssk{border-radius:50%}.ssk.ssk-round:before,.ssk-round .ssk:before{text-indent:0;margin-right:0}.ssk.ssk-rounded,.ssk-rounded .ssk{border-radius:15%}.ssk.ssk-icon{color:#757575;padding:2px;font-size:24px}.ssk.ssk-icon,.ssk.ssk-icon:hover{background-color:transparent}.ssk.ssk-icon:hover{color:#424242}.ssk.ssk-icon.ssk-xs,.ssk-xs>.ssk.ssk-icon{font-size:16px}.ssk.ssk-icon.ssk-sm,.ssk-sm>.ssk.ssk-icon{font-size:20px}.ssk.ssk-icon.ssk-lg,.ssk-lg>.ssk.ssk-icon{font-size:28px}.ssk.ssk-text{overflow:hidden;font-size:17px;line-height:normal;padding-right:10px}.ssk.ssk-text:before,.ssk.ssk-text .glyphicon,.ssk.ssk-text .fa{margin:-7px 10px -7px -7px;padding:7px;background-color:rgba(0,0,0,0.15);vertical-align:bottom;text-indent:0}.ssk-block .ssk.ssk-text{display:block;margin-right:0;text-align:left}.ssk.ssk-text.ssk-xs,.ssk-xs>.ssk.ssk-text{font-size:12px;padding-right:6px}.ssk.ssk-text.ssk-xs:before,.ssk-xs>.ssk.ssk-text:before,.ssk.ssk-text.ssk-xs .glyphicon,.ssk-xs>.ssk.ssk-text .glyphicon,.ssk.ssk-text.ssk-xs .fa,.ssk-xs>.ssk.ssk-text .fa{margin:-4px 6px -4px -4px;padding:4px}.ssk.ssk-text.ssk-sm,.ssk-sm>.ssk.ssk-text{font-size:16px;padding-right:7px}.ssk.ssk-text.ssk-sm:before,.ssk-sm>.ssk.ssk-text:before,.ssk.ssk-text.ssk-sm .glyphicon,.ssk-sm>.ssk.ssk-text .glyphicon,.ssk.ssk-text.ssk-sm .fa,.ssk-sm>.ssk.ssk-text .fa{margin:-5px 7px -5px -5px;padding:5px}.ssk.ssk-text.ssk-lg,.ssk-lg>.ssk.ssk-text{font-size:22px;padding-right:13px}.ssk.ssk-text.ssk-lg:before,.ssk-lg>.ssk.ssk-text:before,.ssk.ssk-text.ssk-lg .glyphicon,.ssk-lg>.ssk.ssk-text .glyphicon,.ssk.ssk-text.ssk-lg .fa,.ssk-lg>.ssk.ssk-text .fa{margin:-9px 13px -9px -9px;padding:9px}.ssk-group,.ssk-sticky{font-size:0}.ssk-sticky{top:0;position:fixed;z-index:2000}.ssk-sticky .ssk{transition:padding .1s ease-out;-webkit-transition:padding .1s ease-out;-moz-transition:padding .1s ease-out;-ms-transition:padding .1s ease-out;-o-transition:padding .1s ease-out;margin:0}@media (min-width:768px){.ssk-sticky.ssk-left .ssk,.ssk-sticky.ssk-right .ssk{display:block;clear:both}.ssk-sticky.ssk-left.ssk-center,.ssk-sticky.ssk-right.ssk-center{top:50%;transform:translateY(-50%);-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%)}.ssk-sticky.ssk-left{left:0}.ssk-sticky.ssk-left .ssk{float:left}.ssk-sticky.ssk-left .ssk:hover{padding-left:15px}.ssk-sticky.ssk-right{right:0}.ssk-sticky.ssk-right .ssk{float:right}.ssk-sticky.ssk-right .ssk:hover{padding-right:15px}}.ssk-sticky.ssk-bottom{font-size:0;top:auto;bottom:0}.ssk-sticky.ssk-bottom.ssk-center{left:50%;right:auto;transform:translateX(-50%);-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);-ms-transform:translateX(-50%);-o-transform:translateX(-50%)}.ssk-sticky.ssk-bottom .ssk{vertical-align:bottom}.ssk-sticky.ssk-bottom .ssk:hover{padding-bottom:15px}.ssk-sticky.ssk-round.ssk-xs .ssk:hover{padding:8px}.ssk-sticky.ssk-round.ssk-sm .ssk:hover{padding:9px}.ssk-sticky.ssk-round .ssk:hover{padding:11px}.ssk-sticky.ssk-round.ssk-lg .ssk:hover{padding:13px}@media (max-width:767px){.ssk-sticky{left:0;right:0;bottom:0;top:auto;width:100%;display:flex !important;flex-direction:row;flex-wrap:nowrap}.ssk-sticky.ssk-sticky-hide-xs{display:none !important}.ssk-sticky .ssk{flex:1;width:auto}.ssk-sticky .ssk .ssk-num{display:none}}.ssk-count{padding-top:20px}.ssk-count .ssk{position:relative}.ssk-count .ssk-num{border-radius:4px;color:#8f8f8f;background-color:rgba(50,50,50,0.03);display:block;font-size:12px;left:0;line-height:20px;position:absolute;right:0;text-align:center;top:-20px}@media (min-width:768px){.ssk-count.ssk-sticky{padding-top:0}.ssk-count.ssk-sticky.ssk-left .ssk-num,.ssk-count.ssk-sticky.ssk-right .ssk-num{top:20%;background-color:transparent}.ssk-count.ssk-sticky.ssk-left .ssk-num{left:100%;margin-left:5px}.ssk-count.ssk-sticky.ssk-right .ssk-num{right:115%;margin-left:-100%;text-align:right}}.ssk-facebook{background-color:#3B5998}.ssk-grayscale>.ssk-facebook{background-color:#757575}.ssk-facebook:hover{background-color:#2d4373}.ssk-facebook:hover{background-color:#2d4373}.ssk-grayscale>.ssk-facebook:hover{background-color:#3B5998}.ssk-facebook.ssk-icon{color:#3B5998}.ssk-facebook.ssk-icon:hover{color:#2d4373}.ssk-facebook.ssk-icon:before{text-indent:0;margin-right:0}.ssk-twitter{background-color:#1DA1F2}.ssk-grayscale>.ssk-twitter{background-color:#757575}.ssk-twitter:hover{background-color:#0c85d0}.ssk-twitter:hover{background-color:#0c85d0}.ssk-grayscale>.ssk-twitter:hover{background-color:#1DA1F2}.ssk-twitter.ssk-icon{color:#1DA1F2}.ssk-twitter.ssk-icon:hover{color:#0c85d0}.ssk-google-plus{background-color:#EA4335}.ssk-grayscale>.ssk-google-plus{background-color:#757575}.ssk-google-plus:hover{background-color:#d62516}.ssk-google-plus:hover{background-color:#d62516}.ssk-grayscale>.ssk-google-plus:hover{background-color:#EA4335}.ssk-google-plus.ssk-icon{color:#EA4335}.ssk-google-plus.ssk-icon:hover{color:#d62516}.ssk-pinterest{background-color:#BD081C}.ssk-grayscale>.ssk-pinterest{background-color:#757575}.ssk-pinterest:hover{background-color:#8c0615}.ssk-pinterest:hover{background-color:#8c0615}.ssk-grayscale>.ssk-pinterest:hover{background-color:#BD081C}.ssk-pinterest.ssk-icon{color:#BD081C}.ssk-pinterest.ssk-icon:hover{color:#8c0615}.ssk-tumblr{background-color:#395773}.ssk-grayscale>.ssk-tumblr{background-color:#757575}.ssk-tumblr:hover{background-color:#283d51}.ssk-tumblr:hover{background-color:#283d51}.ssk-grayscale>.ssk-tumblr:hover{background-color:#395773}.ssk-tumblr.ssk-icon{color:#395773}.ssk-tumblr.ssk-icon:hover{color:#283d51}.ssk-email{background-color:#757575}.ssk-grayscale>.ssk-email{background-color:#757575}.ssk-email:hover{background-color:#5b5b5b}.ssk-email:hover{background-color:#5b5b5b}.ssk-grayscale>.ssk-email:hover{background-color:#757575}.ssk-grayscale>.ssk-email:hover{background-color:#5b5b5b}.ssk-email.ssk-icon{color:#757575}.ssk-email.ssk-icon:hover{color:#5b5b5b}.ssk-vk{background-color:#54769a}.ssk-grayscale>.ssk-vk{background-color:#757575}.ssk-vk:hover{background-color:#425d79}.ssk-vk:hover{background-color:#425d79}.ssk-grayscale>.ssk-vk:hover{background-color:#54769a}.ssk-vk.ssk-icon{color:#54769a}.ssk-vk.ssk-icon:hover{color:#425d79}.ssk-linkedin{background-color:#1c87bd}.ssk-grayscale>.ssk-linkedin{background-color:#757575}.ssk-linkedin:hover{background-color:#156791}.ssk-linkedin:hover{background-color:#156791}.ssk-grayscale>.ssk-linkedin:hover{background-color:#1c87bd}.ssk-linkedin.ssk-icon{color:#1c87bd}.ssk-linkedin.ssk-icon:hover{color:#156791}.ssk-whatsapp{background-color:#34AF23}.ssk-grayscale>.ssk-whatsapp{background-color:#757575}.ssk-whatsapp:hover{background-color:#27851a}.ssk-whatsapp:hover{background-color:#27851a}.ssk-grayscale>.ssk-whatsapp:hover{background-color:#34AF23}.ssk-whatsapp.ssk-icon{color:#34AF23}.ssk-whatsapp.ssk-icon:hover{color:#27851a}.ssk-reddit{background-color:#5f99cf}.ssk-grayscale>.ssk-reddit{background-color:#757575}.ssk-reddit:hover{background-color:#3a80c1}.ssk-reddit:hover{background-color:#3a80c1}.ssk-grayscale>.ssk-reddit:hover{background-color:#5f99cf}.ssk-reddit.ssk-icon{color:#5f99cf}.ssk-reddit.ssk-icon:hover{color:#3a80c1}.ssk-reddit2{background-color:#5f99cf}.ssk-grayscale>.ssk-reddit2{background-color:#757575}.ssk-reddit2:hover{background-color:#3a80c1}.ssk-reddit2:hover{background-color:#3a80c1}.ssk-grayscale>.ssk-reddit2:hover{background-color:#5f99cf}.ssk-reddit2.ssk-icon{color:#5f99cf}.ssk-reddit2.ssk-icon:hover{color:#3a80c1}.ssk-turquoise{background-color:#1abc9c}.ssk-turquoise:hover{background-color:#148f77}.ssk-emerald{background-color:#2ecc71}.ssk-emerald:hover{background-color:#25a25a}.ssk-peter-river{background-color:#3498db}.ssk-peter-river:hover{background-color:#217dbb}.ssk-belize-hole{background-color:#2980b9}.ssk-belize-hole:hover{background-color:#20638f}.ssk-amethyst{background-color:#9b59b6}.ssk-amethyst:hover{background-color:#804399}.ssk-wisteria{background-color:#8e44ad}.ssk-wisteria:hover{background-color:#703688}.ssk-wet-asphalt{background-color:#34495e}.ssk-wet-asphalt:hover{background-color:#222f3d}.ssk-midnight-blue{background-color:#2c3e50}.ssk-midnight-blue:hover{background-color:#1a242f}.ssk-green-sea{background-color:#16a085}.ssk-green-sea:hover{background-color:#107360}.ssk-nephritis{background-color:#27ae60}.ssk-nephritis:hover{background-color:#1e8449}.ssk-sunflower{background-color:#f1c40f}.ssk-sunflower:hover{background-color:#c29d0b}.ssk-orange{background-color:#f39c12}.ssk-orange:hover{background-color:#c87f0a}.ssk-carrot{background-color:#e67e22}.ssk-carrot:hover{background-color:#bf6516}.ssk-pumpkin{background-color:#d35400}.ssk-pumpkin:hover{background-color:#a04000}.ssk-alizarin{background-color:#e74c3c}.ssk-alizarin:hover{background-color:#d62c1a}.ssk-pomegranate{background-color:#c0392b}.ssk-pomegranate:hover{background-color:#962d22}.ssk-clouds{background-color:#cfd9db}.ssk-clouds:hover{background-color:#b1c2c6}.ssk-concrete{background-color:#95a5a6}.ssk-concrete:hover{background-color:#798d8f}.ssk-silver{background-color:#bdc3c7}.ssk-silver:hover{background-color:#a1aab0}.ssk-asbestos{background-color:#7f8c8d}.ssk-asbestos:hover{background-color:#667273}.ssk-dark-gray{background-color:#555}.ssk-dark-gray:hover{background-color:#3b3b3b}.ssk-black{background-color:#333}.ssk-black:hover{background-color:#1a1a1a}
+  </style>
+
+
+
+
+
+
+
+<link rel="shortcut icon"
+
+    href="https://joeyworld.github.io/img/profile.jpg"
+
+>
+
+
+
+
+</head>
+
+
+<body>
+
+
+<div class="header column">
+
+    <div class="container">
+        
+        <a href="https://joeyworld.github.io/"><img class="logo" src="https://joeyworld.github.io/img/profile.jpg" alt="logo"></a>
+        
+        <div class="content">
+            <a href="https://joeyworld.github.io/"><div class="name"><h1>JoeyLog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                            <li><a href="https://joeyworld.github.io/blog/">Blog</a></li>
+                    
+                    
+                        
+                            
+                        
+                    
+                        
+                            
+                            <li><a href="https://joeyworld.github.io/algorithms">algorithms</a></li>
+                            
+                        
+                    
+                    
+                        
+                            <li><a href="https://joeyworld.github.io/about/">About Me</a></li>
+                        
+                    
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="main post non-narrow zero-top-spacing column">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    
+    GyuLog 제작 후기
+    
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Wed Aug 9 2017 15:24:54 UTC">Aug 9, 2017</div>
+                    
+                        
+                    
+                    
+                    <div class="reading-time middot">5 minute read</div>
+                    
+                    
+                      <div class="tags">
+                    
+                        <ul>
+                          
+                            <li class="middot"><a href="https://joeyworld.github.io/tags/%EB%B8%94%EB%A1%9C%EA%B7%B8">블로그</a> </li>
+                          
+                            <li class="middot"><a href="https://joeyworld.github.io/tags/%ED%9B%84%EA%B8%B0">후기</a> </li>
+                          
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <ul>
+                          
+                          
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="markdown">
+                
+    
+    <p>드디어 블로그를 배포하고, 첫 포스트를 쓰게 되었다!</p>
+<h2 id="미루고-미루던-계획을-꺼내오기까지">미루고 미루던 계획을 꺼내오기까지</h2>
+<p>사실 &ldquo;블로그를 만들자!&rdquo; 하고 머릿속에 계획한 것은 작년 겨울방학이었다. 작년 가을부터 여러 개발자 모임에 참석했었는데, 모임에서 알게 된 개발자분들 중 상당수가 개인 블로그를 운영하시는 것을 보고, 블로그를 만들어야겠다고 <del>생각만 했다</del>. 아직 아무것도 모르는 초보였으니깐 겨울방학이면 다 만들 수 있겠지? 하고 패기넘치게 생각했지만&hellip;</p>
+<h2 id="알아야-할-것들이-너무-많음을-깨닫다">알아야 할 것들이 너무 많음을 깨닫다</h2>
+<p>그렇게 블로그를 만들겠다는 결심을 하고, 블로그를 만들 수 있는 여러 가지 방법들을 찾아보다가 문득 깃허브 블로그가 눈에 들어왔다. <code>&lt;github_id&gt;.github.io</code> 의 형식으로 깃허브에서 웹사이트를 호스팅 해주는 서비스였는데, 처음에 딱 &ldquo;이거다!&rdquo; 하고 꽂힌 이유는</p>
+<ul>
+<li>&ldquo;깃허브&rdquo; 라니깐 뭔가 있어 보여서</li>
+<li>뭔가 어렵지 않게 할 수 있을 것 같아서</li>
+</ul>
+<p>였는데, 막상 겪어보니깐 <strong>전혀 아니었다!</strong> 깃허브 블로그는 <code>jekyll</code> 이라는 웹사이트 제작 도구를 이용한 (알고보니 이 툴을 깃허브에서 만들었다) 정적 웹사이트 호스팅 방식이었는데, &ldquo;2017년 1월의 나&rdquo; 한테는 너무 힘들었다 (너무나도 당연했다. 웹개발 경험이라고는 중2때 딱 한번 맛본 html이 전부였으니깐).</p>
+<p>그래도 어떻게든 튜토리얼을 따라가면서 해본 결과 레포지토리를 만들 수는 있었다. 하지만, 해당 레포지토리로 들어가보니 그냥 흰색 바탕에 &ldquo;GyuLog&rdquo; 라고 적힌, 말 그대로 아무것도 없는 html 페이지 하나 뿐이었다. 여기다가 내용을 추가하고 꾸미자니 CSS도 적용해야 되고, 자바스크립트도 배워야 되고, 너무 할 것들이 많았다. 이 때 &ldquo;내가 멋모르고 거창한 계획을 세웠구나&rdquo; 를 뼈저리게 느꼈다.</p>
+<p>그리고 2학년 1학기가 찾아왔고, 대학교 2학년들에게 찾아오는 &ldquo;대2병&rdquo; 에 나도 예외는 없었다<del>가 아니라 그냥 내가 너무 게을러서 공부를 안했다</del>.</p>
+<h2 id="다시-웹-개발에-손을-대다">다시 웹 개발에 손을 대다</h2>
+<p>그렇게 방황을 하다가 다시 웹 개발에 손을 대게 된 계기는, 학교에서 학과 동아리에 들어가고 나서부터였다. 과 동아리가 1학년 신입생들은 동아리 자체 세미나에 참석하고, 나머지 재학생들은 세미나를 진행함과 동시에 동아리에서 팀을 만들어서 프로젝트를 진행하는 형식이었는데, 여러 주제를 고민하다가 우리 팀에서 나온 주제는 &ldquo;동아리 웹사이트 만들기&rdquo; 였다.<br>
+또한, 세미나를 진행하면서 느꼈던 점은, &ldquo;내가 많이 알아야지 많이 알려줄 수 있겠구나&rdquo; 였다. 배워서 남 주는 것을 좋아하지만 남을 주려면 일단 배워야 할 것이 아닌가.</p>
+<p>학교 동아리 웹개발 팀에서 나온 얘기는, &ldquo;학기중에 파이썬과 장고(<code>django</code>)를 공부하고, 방학때 개발을 시작하자&rdquo; 였다. <del>그리고 방학중에는 개발을 위한 기획조차 하지 않았다.</del> 동아리 차원에서 웹 개발을 하게 될 것 같아서 웹 백엔드를 본격적으로 공부함과 동시에 개인 블로그 구축까지 해낸다면 얻어갈 것이 많을 것 같아서 다시 시작했고, 다음과 같이 대충 블로그 개발을 위한 구상을 했다.</p>
+<ul>
+<li>프론트엔드를 할 줄 모르니 무료 테마를 이용하자.</li>
+<li>백엔드는 <code>Go</code>를 이용하여 구축하자.</li>
+<li>배포는 <code>docker</code>를 활용하여 <code>aws</code>에 배포하자.</li>
+</ul>
+<h3 id="go-언어를-선택한-이유">Go 언어를 선택한 이유</h3>
+<p>백엔드 언어 중에 눈에 들어온 세 가지는 <code>Python</code>, <code>Node.js</code>, 그리고 <code>Go</code> 였는데, 고 언어를 선택하게 된 이유는,</p>
+<ul>
+<li>파이썬은 어차피 학교 동아리 사이트 개발하면서 익힐 수 있을것 같아서</li>
+<li>구글이 개발한 Go 언어를 써보고 싶어서</li>
+<li><del>지인 개발자분이 고 언어 약을 팔아서</del></li>
+<li><del>자바는 너무 구리다고 생각해서</del></li>
+</ul>
+<p>였다(블로그를 만들고 나니 고 언어로 개발한 선택은 대성공이었다. 고 언어를 소개해주셔서 감사합니다!). 또한, 세 언어를 모두 둘러본 결과, 고언어가 가장 간결해 보였고, C와 스타일이 제일 유사했다(그때 당시 가장 자신있었던 언어는 C/C++ 이었으니깐).<br>
+그렇게 정신없이 2학년 1학기가 끝나고 방학이 찾아왔고, 대충 계획해놓은 것들을 하나씩 실천에 옮기기 시작했다.</p>
+<h2 id="본격적으로-공부하고-개발하다">본격적으로 공부하고 개발하다</h2>
+<p>가장 먼저 한 일은, Go 언어를 공부하는 것이었다. 첫 번째로 공식 사이트 투어를 돌았다. 투어의 내용도 알찼고 한국어 번역도 엄청 잘 되어 있어서 이해하기 엄청 편하였다.<br>
+두 번째로, <code>The Go Programming Language</code> 라는 책을 사서 읽었다. 투어보다는 한층 더 심화된 Go 언어의 문법과 활용 방법에 대하여 알 수 있었고, 이때부터 고언어의 메커니즘에 빠져들었다. 인터페이스의 암시적 충족, 구조체의 리시버, 고루틴 등 고 언어의 매력적인 특징에 빠져들었다.<br>
+마지막으로, <code>Go Web Programming</code> 이라는 책을 사서 읽었다. 이 책을 통하여 웹 백엔드 개발의 기반 지식(http 등) 과 Go 언어로 웹 백엔드 개발을 하는 방법을 익혔다.</p>
+<p>이렇게 공부를 다 하고 나니 뭔가 자신감이 솟구쳤다. 당장이라도, 하루만에 이 블로그란 것을 만들 수 있을 것만 같은, 왠지는 모르겠지만 할 수 있겠다는 자신감에 힘입어 <strong>일단 시작했다</strong>(역시 맨땅에 헤딩하면 힘들지만 얻어가는 것은 많은 거 같다). 하지만 역시나, 개발 과정이 순탄치는 않았는데, 가장 어려웠던 점을 꼽자면,</p>
+<ul>
+<li>무료 테마를 Go 언어용 템플릿으로 바꾸는 일</li>
+<li>UI 수정이 필요함에 따라 CSS를 수정하는 일</li>
+<li>버그가 났을 때 기록하고, 고치는 일</li>
+</ul>
+<p>주로 프론트엔드 관련 작업이 가장 어려웠다. <strong>아무리 백엔드 개발이라도 프론트엔드 지식이 없으면 힘들구나</strong> 라는 사실을 깨달았다.<br>
+그렇게 7월 한달을 꼬박 공부하고 개발하여서, 결국 로컬(내 컴퓨터) 에서 잘 돌아가는 블로그를 완성시켰다!</p>
+<h3 id="배포">배포</h3>
+<p>개발을 다 하였으니 실제 서버에 올려놓는 일만 남아서, <del>일단 하루 쉬고</del> aws 를 공부하기 시작하였다. 생각했던 것보다 aws는 복잡하고 엄청 기능들이 많았다. 정말 없는 게 없는 정도였다! 클라우드 서버부터, 데이터베이스며, 파일 저장소며, 도메인 관련 기능까지 정말 많았다.<br>
+배포 과정 또한 <strong>일단 하고 봤다</strong>. EC2(클라우드 서버)도 두고, S3(파일 저장소) 도 두고, RDS(관계형 데이터베이스 - 데이터베이스를 MySQL을 이용하여 개발하였다) 도 두고&hellip;</p>
+<p>하다보니 너무 복잡해서 구글링을 하다가, <code>Elastic Beanstalk</code> 에 대해서 알게 되었는데, 여태 내가 시도한 <del>삽질한</del> 것들을 전부 알아서 해결해주는 aws 기능이었다! (여러분 EB 씁시다 알아서 다 해줘요) EB 를 사용하는 과정에서 <code>docker</code>는 필요가 없다고 생각되어서 사용하지 않았고, 오랜 고생 끝에 이 블로그가 탄생하게 되었다! 이제 aws 프리 티어 한도가 다 될 때까지 제대로 놀아보는 일만 남았다.</p>
+<h2 id="얻었던-것-그리고-앞으로-할-일들">얻었던 것, 그리고 앞으로 할 일들</h2>
+<p>막상 블로그를 완성시키기 전에는 엄청 힘들었는데, 끝나고 보니깐 &ldquo;별거 아니었네&rdquo; 라는 생각도 든다.</p>
+<p>우선, <strong>많이, 꾸준히 프로젝트를 해야겠다</strong> 라는 것을 느꼈다. 개인 프로젝트든 팀 프로젝트든, 과정이 수월했든 수월하지 않았든 간에 해당 프로젝트에서 얻어가는 기술적인 면과 정신적인 면이 많겠구나 는 것을 첫 개인 프로젝트였던 &ldquo;블로그 만들기&rdquo; 에서 얻었다.</p>
+<p>두번째, <strong>백엔드 개발자라도 프론트엔드 지식이 필요하다</strong> 를 느꼈다. 개발 도중에 가장 힘들었던 일은, http 요청/응답 다루기, 데이터베이스, 기타 고언어적인 부분이 아닌 바로 프론트엔드 였으니깐. 또한, 막상 팀으로 개발할 때 프론트엔드 개발자가 팀에 있더라도, 백엔드 개발자가 프론트엔드 지식이 있으면 팀원간 소통이 훨씬 쉬울 테니깐 프론트엔드 지식이 필요할 것이다.</p>
+<p>세번째, <strong>로그 남기기와 유닛 테스팅의 중요성</strong> 을 느꼈다. 개발 초기에는 구현하는 기능 및 메소드에 일절의 로그도 남기지 않았다. 그러다 보니 개발하고 있는 소프트웨어의 현재 상태 등을 개발 도중에 알아내기가 매우 어려웠다. 또한, 테스팅을 소홀히 하다 보니 잘 되던 기능이 갑자기 안 되는 경우도 있었다. 고 언어에는 테스팅 라이브러리가 매우 잘 되어 있는데 이를 활용하지 못했다는 자책감도 든다.</p>
+<p>하지만 무엇보다도, <strong>코딩은 하면 재밌다</strong> 를 가장 와닿게 느꼈던 것 같다. 딱 웹사이트에 접속했을 때 원하던 화면이 뜰 때 그 쾌감이란!</p>
+<p>이렇게 첫 번째 개인 프로젝트 &ldquo;블로그 만들기&rdquo; 는 일단 끝이 난 상태다. 하지만 앞으로 할 일들이 많은 것 같아서 정리해보면,</p>
+<ul>
+<li><strong>검색 기능과 분류 기능</strong> : 포스트가 많아짐에 따라 검색 기능과 분류 기능이 추가적으로 구현되어야 할 것으로 보인다. 검색은 <code>elasticsearch</code>를 한번 사용해볼 생각이다.</li>
+<li><strong>블로그 테마 오픈소스화</strong> : 블로그 테마를 Go 언어 엔진에서 쓸 수 있도록 템플릿으로 제작하였는데, <code>hugo</code> 같은 블로깅 시스템에서 쓸 수 있도록 상용화를 시켜볼 생각이다(이미 원작 테마 깃허브 레포지토리를 fork 해둔 상태이다).</li>
+<li><strong>성능 개선</strong> : 처음 한 개발이다 보니깐 미숙한 부분이 많았을 것이다. 추후 다른 프로젝트를 하면서 지식을 더 얻은 후에 다시 블로그 코드로 돌아와서 성능을 개선시켜 볼 생각이다.</li>
+</ul>
+<p>많은 우여곡절 끝에 작년 겨울에 계획&quot;만&quot; 했던 블로그 만들기를 무려 8개월의 시간 끝에 드디어 완성시켰다! 정말 블로그 만들기를 잘 한것 같다. 노력이 헛되지 않도록 꾸준히 포스팅을 열심히 해야겠다.</p>
+
+
+            </div>
+            
+            <br>
+            <div class="share">
+                  
+                  <a href="" class="ssk ssk-facebook"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-twitter"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-google-plus"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-linkedin"></a>
+                  
+            </div>
+            
+            
+            <br>
+            <div class="navigation">
+                
+                <div>
+                    <img class="icon" src="https://joeyworld.github.io/img/back.svg" alt="back" />
+                    <a href="https://joeyworld.github.io/blog/welcome-to-gyulog/">Welcome to GyuLog!</a>
+                </div>
+                
+                <div style="width: 100%;"></div>
+                
+                <div>
+                    <a href="https://joeyworld.github.io/blog/pycon-korea-2017-%EC%B0%B8%EC%84%9D%ED%9B%84%EA%B8%B0/">PyCon Korea 2017 참석후기</a>
+                    <img class="icon" src="https://joeyworld.github.io/img/next.svg" alt="next" />
+                </div>
+                
+            </div>
+            
+            
+
+            
+            
+
+            
+
+            
+        </div>
+    </div>
+</div>
+
+
+
+<div class="footer column">
+    <div class="container">
+
+        
+            <div class="copyright">
+            
+            
+                <a href="https://github.com/joeyworld/joeyworld.github.io/tree/master/content/blog/first-post.md" target="_blank">View this post on GitHub</a>
+            
+            </div>
+        
+
+        
+
+        <div class="copyright">
+
+        
+            
+                <a href="https://joeyworld.github.io/license">Copyright © 2017 Byeong Gyu Choi</a>
+            
+        
+
+        </div>
+        <div class="icons">
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+            <a href="https://facebook.com/joeyworldd" rel=me target="_blank">
+                <img class="icon" src="https://joeyworld.github.io/img/facebook.svg" alt="facebook" />
+            </a>
+        
+
+        
+            <a href="https://github.com/joeyworld" rel=me target="_blank">
+                <img class="icon" src="https://joeyworld.github.io/img/github.svg" alt="github" />
+            </a>
+        
+
+        
+
+        
+            <a href="https://www.linkedin.com/in/%eb%b3%91%ea%b7%9c-%ec%b5%9c-43290213b" rel=me target="_blank">
+                <img class="icon" src="https://joeyworld.github.io/img/linkedin.svg" alt="linkedin" />
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="mailto:bisschoi9541@gmail.com">
+                <img class="icon" src="https://joeyworld.github.io/img/email.svg" alt="email" />
+            </a>
+        
+
+        
+            <a href="https://joeyworld.github.io/index.xml">
+                <img class="icon" src="https://joeyworld.github.io/img/rss.svg" alt="rss" />
+            </a>
+        
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>
+  WebFont.load({
+    google: {
+      families: ['Raleway:400,600,700', 'Merriweather:300,300i,700,700i', 'Ubuntu+Mono:400,700']
+    }
+  });
+</script>
+
+
+
+  <script src="https://joeyworld.github.io/js/highlight.min.js" defer></script>
+  
+
+
+
+  <script src="https://joeyworld.github.io/js/progressively.min.js" defer></script>
+
+
+
+  <script src="https://joeyworld.github.io/js/social-share-kit.min.js" defer></script>
+
+
+
+
+
+
+<script>
+  window.onload = function() {
+    
+      hljs.initHighlighting();
+    
+    
+      progressively.init({delay: 30, throttle: 50});
+    
+    
+      SocialShareKit.init({
+        twitter: {
+            text: '',
+            
+        }
+      });
+    
+  };
+</script>
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Functional Programming on JoeyLog</title>
+    <link>https://joeyworld.github.io/categories/functional-programming/</link>
+    <description>Recent content in Functional Programming on JoeyLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Sat, 30 Sep 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://joeyworld.github.io/categories/functional-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>파이썬으로 알아보는 일급 객체(first-class citizen)</title>
+      <link>https://joeyworld.github.io/blog/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9C%BC%EB%A1%9C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9D%BC%EA%B8%89-%EA%B0%9D%EC%B2%B4first-class-citizen/</link>
+      <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9C%BC%EB%A1%9C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9D%BC%EA%B8%89-%EA%B0%9D%EC%B2%B4first-class-citizen/</guid>
+      <description>함수형 프로그래밍(functional programming) 을 공부하다보면, 가장 많이 나오는 말이 &amp;ldquo;일급 객체&amp;rdquo;, 혹은 &amp;ldquo;일급 시민&amp;rdquo; 일 겁니다. 일급 객체가 무엇인지 파이썬의 함수를 예시로 들어 알아보는 포스팅입니다.
+일급 객체, 일급 함수라는 개념은 영국의 크리스토퍼 스트레이치라는 컴퓨터 과학자가 1960 년에 처음 소개한 개념이다. 일급 객체가 되려면 다음과 같은 조건을 만족해야 한다.
+ 변수나 데이터 구조 안에 담을 수 있다. 매개변수로 전달이 가능하다. 리턴값으로 사용될 수 있다.  파이썬의 함수는 일급 객체이다 해당 조건을 보면, 파이썬의 함수는 일급 객체이다 라는 결론을 쉽게 도출할 수 있다.</description>
+    </item>
+    
+  </channel>
+</rss>

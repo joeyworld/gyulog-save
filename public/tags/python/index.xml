@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on JoeyLog</title>
+    <link>https://joeyworld.github.io/tags/python/</link>
+    <description>Recent content in Python on JoeyLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Fri, 08 Jun 2018 19:44:30 +0900</lastBuildDate><atom:link href="https://joeyworld.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Django 커스텀 미들웨어 만들기 &#43; Rest Framework 를 위한 HTTP Response Formatting</title>
+      <link>https://joeyworld.github.io/blog/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4-%EB%A7%8C%EB%93%A4%EA%B8%B0-rest-framework-%EB%A5%BC-%EC%9C%84%ED%95%9C-http-response-formatting/</link>
+      <pubDate>Fri, 08 Jun 2018 19:44:30 +0900</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4-%EB%A7%8C%EB%93%A4%EA%B8%B0-rest-framework-%EB%A5%BC-%EC%9C%84%ED%95%9C-http-response-formatting/</guid>
+      <description>들어가며 이 포스팅은 다음에 관해서 다룬다:
+ 미들웨어란? 미들웨어 설정법 나만의 미들웨어를 어떻게 작성하는가, 그리고 그 예시  아쉽게도, 이 포스팅에서 사용되는 예제 코드에 대한 파이썬 문법 및 standard library 사용법은 다루지 않는다 (예시: 정규식 사용을 위한 re 모듈). 포스팅을 보시다 막히시면 파이썬 공식 문서 혹은 구글링을 통하여 지식을 습득하시길 권장드린다.
+또한, 이 포스팅에서 사용하는 예제 코드는 Rest Framework 를 활용한다. 따라서, Rest Framework 를 사용하지 않으시는 독자분께서는 &amp;ldquo;커스텀 미들웨어 작성법&amp;rdquo; 단락까지만 읽으셔도 무방하다.</description>
+    </item>
+    
+    <item>
+      <title>Django 설정 더욱 세부적으로 분리하기</title>
+      <link>https://joeyworld.github.io/blog/django-%EC%84%A4%EC%A0%95-%EB%8D%94%EC%9A%B1-%EC%84%B8%EB%B6%80%EC%A0%81%EC%9C%BC%EB%A1%9C-%EB%B6%84%EB%A6%AC%ED%95%98%EA%B8%B0/</link>
+      <pubDate>Wed, 30 May 2018 01:11:16 +0900</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/django-%EC%84%A4%EC%A0%95-%EB%8D%94%EC%9A%B1-%EC%84%B8%EB%B6%80%EC%A0%81%EC%9C%BC%EB%A1%9C-%EB%B6%84%EB%A6%AC%ED%95%98%EA%B8%B0/</guid>
+      <description>들어가기에 앞서 이전 포스팅에서, Django 설정을 분기하는 방법에 대해서 포스팅한 적이 있습니다. 해당 포스팅 링크
+하지만, 설정의 카테고리별로 완벽하게 분리하는 데에는 한계가 있었습니다.
+이번 포스팅에서는 설정을 카테고리별로, 더욱 세부적으로 분리하는 방법에 대해서 다룹니다.
+장고의 설정은 형식 안에서, 어떤 식으로 분리하든 깔끔하기만 하면 상관이 없기에, 이 포스팅은 그냥 참고용으로만 보시고, 본인에게 맞는 설정방법으로 설정하시면 됩니다 :)
+기존 단순 설정 분리 방식과의 비교 이전 포스팅에서 다룬 설정 분리는, 환경에 따른 설정 분리만 하였다.</description>
+    </item>
+    
+    <item>
+      <title>Django 커스텀 유저 모델 만들기</title>
+      <link>https://joeyworld.github.io/blog/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9C%A0%EC%A0%80-%EB%AA%A8%EB%8D%B8-%EB%A7%8C%EB%93%A4%EA%B8%B0/</link>
+      <pubDate>Fri, 11 May 2018 21:39:21 +0900</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9C%A0%EC%A0%80-%EB%AA%A8%EB%8D%B8-%EB%A7%8C%EB%93%A4%EA%B8%B0/</guid>
+      <description>Django 에서는 기본 유저 모델을 제공해 준다. 해당 유저 모델은 관리자 생성, 로그인 등 다양한 방향으로 확장해서 사용할 수 있다.
+하지만, 그 중에서도 가장 빛나는 기능은 바로 &amp;ldquo;유저 모델 자체&amp;rdquo; 도 확장할 수 있다는 것이다. 이번 포스트에서는 기존 유저 모델을 확장한 커스텀 유저 모델을 만드는 방법을 소개한다.
+유저 모델 만들기 장고는 기본적으로 authentication 기능이 포함된 User 모델을 제공해 준다. (django.contrib.auth.models.User)
+해당 모델을 확장해서 사용할 수도 있고, 아예 새로 만들어서 대체할 수 있다.</description>
+    </item>
+    
+    <item>
+      <title>Django 에서 여러 가지의 설정을 할 수 있는 방법</title>
+      <link>https://joeyworld.github.io/blog/django-%EC%97%90%EC%84%9C-%EC%97%AC%EB%9F%AC-%EA%B0%80%EC%A7%80%EC%9D%98-%EC%84%A4%EC%A0%95%EC%9D%84-%ED%95%A0-%EC%88%98-%EC%9E%88%EB%8A%94-%EB%B0%A9%EB%B2%95/</link>
+      <pubDate>Mon, 05 Mar 2018 01:35:53 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/django-%EC%97%90%EC%84%9C-%EC%97%AC%EB%9F%AC-%EA%B0%80%EC%A7%80%EC%9D%98-%EC%84%A4%EC%A0%95%EC%9D%84-%ED%95%A0-%EC%88%98-%EC%9E%88%EB%8A%94-%EB%B0%A9%EB%B2%95/</guid>
+      <description>때로는, 장고 어플리케이션에서 세팅 파일 하나로는 모든 설정을 다 할 수 없는 경우가 존재합니다. 이런 경우에, 여러 개의 설정 파일을 만들어서 다중 설정을 할 수 있는 방법을 소개합니다!
+Intro: 처음 django 프로젝트를 만들면&amp;hellip; 처음 django 프로젝트를 생성할 때 다음과 같은 명령어로 생성하는 것이 대부분이다. (PyCharm 같은 IDE를 사용한다 한들 결과는 똑같거나 비슷하다.)
+$ django-admin startproject PROJECT_NAME 해당 명령어로 프로젝트를 만든 후 PROJECT_NAME 이라는 이름의 프로젝트 폴더로 들어가면,
+PROJECT_NAME/ ├── PROJECT_NAME │ ├── __init__.</description>
+    </item>
+    
+    <item>
+      <title>Django 2.0 의 주 변경사항 살펴보기!</title>
+      <link>https://joeyworld.github.io/blog/django-2.0-%EC%9D%98-%EC%A3%BC-%EB%B3%80%EA%B2%BD%EC%82%AC%ED%95%AD-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0/</link>
+      <pubDate>Wed, 27 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/django-2.0-%EC%9D%98-%EC%A3%BC-%EB%B3%80%EA%B2%BD%EC%82%AC%ED%95%AD-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0/</guid>
+      <description>Django 2.0 이 릴리즈 되었습니다! 1.11 버전과 비교해 다른 주요 상황들을 살펴봄과 동시에, 2.0에서만 지원하는 핵심 기능들을 소개합니다!
+Django 2.0 이 12 월 2 일 자로 정식 출시 되었습니다! 그런데 왜 포스팅은 12 월 27 일?
+써본 결과, 확실히 1.11 버전 보다 편해진 점이 많은 것 같은데, 이전 버전과 비교함과 동시에 2.0 버전의 핵심 기능을 소개하고자 해당 포스팅을 준비하게 되었습니다.
+호환되는 Python 버전 Django 2.0 은 파이썬 3.4, 3.5, 3.6 과 호환됩니다(현재 가장 최신 파이썬 버전은 3.</description>
+    </item>
+    
+    <item>
+      <title>Python 함수의 docstring 과 decorator</title>
+      <link>https://joeyworld.github.io/blog/python-%ED%95%A8%EC%88%98%EC%9D%98-docstring-%EA%B3%BC-decorator/</link>
+      <pubDate>Tue, 03 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/python-%ED%95%A8%EC%88%98%EC%9D%98-docstring-%EA%B3%BC-decorator/</guid>
+      <description>파이썬의 함수는 엄청 강력합니다. 파이썬의 함수의 강력함을 배가시켜주는 두 요소, docstring과 decorator에 대한 소개입니다.
+이번 포스팅은, 파이썬의 함수 중 함수를 서식하는 기능을 하는 docstring과 decorator에 관한 내용이다. 특히 데코레이터 같은 경우에는 처음 접하는 경우에는 &amp;ldquo;저게 뭐지?&amp;rdquo; 하고 느낄 수 있지만, 잘 사용하면 매우 강력한 도구가 되는 만큼 잘 알고 가는 것이 좋다.
+(이번 포스팅에서는 함수에 적용되는 데코레이터만 다룹니다. 클래스를 데코레이터로 만들 수도 있어요, 하지만 여기서는 다루지 않고 오로지 함수에만! 집중해 보겠습니다.</description>
+    </item>
+    
+    <item>
+      <title>파이썬으로 알아보는 일급 객체(first-class citizen)</title>
+      <link>https://joeyworld.github.io/blog/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9C%BC%EB%A1%9C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9D%BC%EA%B8%89-%EA%B0%9D%EC%B2%B4first-class-citizen/</link>
+      <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9C%BC%EB%A1%9C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9D%BC%EA%B8%89-%EA%B0%9D%EC%B2%B4first-class-citizen/</guid>
+      <description>함수형 프로그래밍(functional programming) 을 공부하다보면, 가장 많이 나오는 말이 &amp;ldquo;일급 객체&amp;rdquo;, 혹은 &amp;ldquo;일급 시민&amp;rdquo; 일 겁니다. 일급 객체가 무엇인지 파이썬의 함수를 예시로 들어 알아보는 포스팅입니다.
+일급 객체, 일급 함수라는 개념은 영국의 크리스토퍼 스트레이치라는 컴퓨터 과학자가 1960 년에 처음 소개한 개념이다. 일급 객체가 되려면 다음과 같은 조건을 만족해야 한다.
+ 변수나 데이터 구조 안에 담을 수 있다. 매개변수로 전달이 가능하다. 리턴값으로 사용될 수 있다.  파이썬의 함수는 일급 객체이다 해당 조건을 보면, 파이썬의 함수는 일급 객체이다 라는 결론을 쉽게 도출할 수 있다.</description>
+    </item>
+    
+    <item>
+      <title>PyCon Korea 2017 참석후기</title>
+      <link>https://joeyworld.github.io/blog/pycon-korea-2017-%EC%B0%B8%EC%84%9D%ED%9B%84%EA%B8%B0/</link>
+      <pubDate>Tue, 15 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/pycon-korea-2017-%EC%B0%B8%EC%84%9D%ED%9B%84%EA%B8%B0/</guid>
+      <description>국내 최대규모 파이썬 컨퍼런스인 파이콘! 올해는 직접 가서 겪어봤습니다.
+파이콘! 이름만 들어도 무슨 행사일지 알것같은 이 행사는 파이썬 컨퍼런스이다. 국내 파이써니스타들을 대상으로 한 대규모 컨퍼런스에 올해는 나도 참석했다(나도 나름 파이써니스타라고 생각했고, 또한 파이썬을 좋아하기 때문이다).
+사실 작년까지만 해도 이런 행사가 존재하는지 조차도 몰랐는데, 올해 처음 간 파이콘에서 상상 이상의 충격을 받았다. 받은 충격을 여러분들과 공유하고자 함께 글을 쓴다.
+엄청 많은 사람 기술적인 부분에서도 충격을 많이 받았지만, 가장 충격을 받았던 건 바로 사람 수였다.</description>
+    </item>
+    
+  </channel>
+</rss>

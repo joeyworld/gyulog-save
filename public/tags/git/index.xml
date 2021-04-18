@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on JoeyLog</title>
+    <link>https://joeyworld.github.io/tags/git/</link>
+    <description>Recent content in git on JoeyLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Wed, 30 Aug 2017 01:24:37 +0000</lastBuildDate><atom:link href="https://joeyworld.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git 입문자를 위한 git 사용법</title>
+      <link>https://joeyworld.github.io/blog/git-%EC%9E%85%EB%AC%B8%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-git-%EC%82%AC%EC%9A%A9%EB%B2%95/</link>
+      <pubDate>Wed, 30 Aug 2017 01:24:37 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/git-%EC%9E%85%EB%AC%B8%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-git-%EC%82%AC%EC%9A%A9%EB%B2%95/</guid>
+      <description>개발할 때 코딩 실력이나만큼 중요한 것은 바로 버전 관리죠. 현재 거의 필수적으로 쓰이는 버전 관리 툴인 git 에 관하여 알아보는 포스트입니다. (git 을 아예 모르는 사람들을 대상으로 포스팅했습니다.)
+해당 포스트에서는 터미널 명령어를 사용합니다. 터미널이 아직까지는 어려우신 분들은 SourceTree 를 활용하셔도 좋습니다(SourceTree에 관해서는 아래에 자세하게 명시하겠습니다).
+버전 관리 툴의 필요성 학교에서 팀 프로젝트를 해봤다면 이런 경험이 한 번쯤은 있었을 것이다.
+철수 : (압축파일을 푼다) 영희야, 너가 보내준 파일 받았는데 여기 OOOO한 부분에서 문제가 있어.</description>
+    </item>
+    
+  </channel>
+</rss>

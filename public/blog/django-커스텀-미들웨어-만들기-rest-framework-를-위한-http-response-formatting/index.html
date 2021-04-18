@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description" content="Django, Node, React를 합니다. 머신러닝, 특히 NLP에 관심이 매우 많습니다.">
+
+
+<meta property="og:site_name" content="JoeyLog" />
+<meta property="og:locale" content="ko-KR" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joeyworld.github.io/blog/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4-%EB%A7%8C%EB%93%A4%EA%B8%B0-rest-framework-%EB%A5%BC-%EC%9C%84%ED%95%9C-http-response-formatting/" />
+<meta property="og:title" content="Django 커스텀 미들웨어 만들기 &#43; Rest Framework 를 위한 HTTP Response Formatting" />
+<meta property="twitter:title" content="Django 커스텀 미들웨어 만들기 &#43; Rest Framework 를 위한 HTTP Response Formatting">
+
+    <meta property="twitter:card" content="summary">
+
+<meta property="og:description" content="">
+<meta property="twitter:description" content="">
+
+<title>
+
+
+     JoeyLog - Django 커스텀 미들웨어 만들기 &#43; Rest Framework 를 위한 HTTP Response Formatting 
+
+</title>
+<link rel="canonical" href="https://joeyworld.github.io/blog/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4-%EB%A7%8C%EB%93%A4%EA%B8%B0-rest-framework-%EB%A5%BC-%EC%9C%84%ED%95%9C-http-response-formatting/">
+
+
+<style media="screen">
+  @font-face {
+  font-family: 'Nexa Bold';
+  src: url('https://joeyworld.github.io/fonts/Nexa Bold.otf');
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, div.column {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+a,
+a:visited,
+a:focus,
+a:active {
+  text-decoration: none;
+}
+html {
+  height: 100%;
+  font-size: 16px;
+}
+body {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 100%;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  color: #111111;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility !important;
+}
+.icon {
+  text-rendering: geometricPrecision !important;
+}
+section {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  width: 100%;
+}
+div.column {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  width: 100%;
+}
+.container {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  width: 100%;
+}
+div.header .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+}
+div.header .content {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.header .container .logo {
+  
+  max-width: 100px;
+  
+  margin-left: -2em;
+}
+div.header .name {
+  padding-top: 20px;
+  font-size: 28px;
+  font-family: 'Nexa Bold', 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  
+  text-transform: uppercase;
+  
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+}
+div.header nav {
+  margin-bottom: 16px;
+}
+div.header nav ul {
+  list-style: none;
+  text-align: center;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flexbox;
+  display: -ms-inline-flex;
+  display: inline-flex;
+}
+div.header nav ul li {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+div.header nav ul li:first-child {
+  margin-left: 0;
+}
+div.header nav ul li:last-child {
+  margin-right: 0;
+}
+div.header nav ul a {
+  color: #555555;
+  font-weight: 400;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  -webkit-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.header nav ul a:hover {
+  color: #111111;
+}
+div.footer .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+  width: 100%;
+  text-align: center;
+}
+div.footer .container a {
+  font-size: 14px;
+  margin-left: 6px;
+  margin-right: 6px;
+  opacity: 0.6;
+  -webkit-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.footer .container a:first-child {
+  margin-left: 0;
+}
+div.footer .container a:last-child {
+  margin-right: 0;
+}
+div.footer .container a:hover {
+  opacity: 0.8;
+}
+div.footer .container a .icon {
+  width: 16px;
+  height: 16px;
+}
+div.footer .container .copyright {
+  flex-grow: 0.5;
+  text-align: start;
+}
+div.footer .container .icons {
+  flex-grow: 0.5;
+  text-align: end;
+}
+div.main .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  justify-content: flex-start;
+}
+div.main .content {
+  color: #111111;
+  font-size: 16px;
+}
+div.main .content .title-container {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+}
+div.main .content .posts {
+  
+  
+}
+div.main .content .page-heading {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  text-transform: uppercase;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+  margin-bottom: 16px;
+}
+div.main .content .front-matter .page-heading {
+  margin-bottom: 0;
+}
+div.main .content .front-matter .meta {
+  font-size: 14px;
+  color: #666666;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  margin-bottom: 32px;
+}
+div.main .content .front-matter .date,
+div.main .content .front-matter .author,
+div.main .content .front-matter .tags,
+div.main .content .front-matter .word-count,
+div.main .content .front-matter .middot:before {
+  display: none;
+}
+div.main .content .front-matter .middot:before {
+  font-size: 6px;
+  margin: 0 6px;
+  vertical-align: middle;
+  content: "•";
+}
+div.main .content .front-matter .tags ul {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.main .content .front-matter .tags ul li {
+  -webkit-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.main .content .front-matter .tags ul li:hover {
+  opacity: 0.7;
+}
+div.main .content .front-matter .tags ul li a {
+  color: #666666;
+}
+
+div.main .container.f04 {
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+}
+div.main .container.f04 .content {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.main .container.f04 .content .num {
+  margin: 30px 0px 30px 0;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 50px;
+}
+div.main .container.f04 .content .detail {
+  margin-bottom: 40px;
+}
+div.main .container .content .groupby {
+  margin-top: 1em;
+  padding-left: 0.5em;
+}
+div.main .container .content .post-item {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  display: list-item;
+  list-style: disc inside;
+}
+div.main .container .content .post-item .meta {
+  font-size: 14px;
+  color: #666666;
+  display: none;
+  min-width: 100px;
+}
+div.main .container .content .see-more {
+  font-style: italic;
+  float: right;
+  font-size: 0.9em;
+  margin-top: 2em;
+  color: #313537;
+}
+div.main .container .content .see-more:hover {
+  color: #666;
+}
+section {
+  padding: 0 16px;
+}
+div.column {
+  padding: 0 16px;
+}
+div.header {
+  padding-top: 10px;
+}
+div.header-home {
+  padding-top: 36px;
+}
+div.main {
+  padding-top: 32px;
+}
+div.main .container .content .post-item .meta {
+    display: block;
+}
+div.main .container .content .post-item {
+    display: flex;
+    list-style: none;
+}
+a {
+  color: #428bca;
+  -webkit-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+a:hover {
+  color: #2a6496;
+}
+img {
+  max-width: 100%;
+}
+div.main .content {
+    width: 100%;
+}
+div.main .content .markdown {
+  font-size: 1.1em;
+  line-height: 1.75em;
+  color: #313537;
+  font-family: serif;
+  font-weight: 300;
+}
+div.main .content .markdown h1,
+div.main .content .markdown h2,
+div.main .content .markdown h3,
+div.main .content .markdown h4,
+div.main .content .markdown h5,
+div.main .content .markdown h6 {
+  font-size: 22px;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  font-weight: 700;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+  text-transform: none;
+  margin-top: 1.75rem;
+}
+div.main .content .markdown h1 {
+  font-size: 1.75rem;
+  margin-bottom: 2rem;
+}
+div.main .content .markdown h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+div.main .content .markdown h3 {
+  font-size: 1em;
+  margin-bottom: 1rem;
+}
+div.main .content .markdown h4,
+div.main .content .markdown h5,
+div.main .content .markdown h6 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  letter-spacing: none;
+}
+div.main .content .markdown code,
+div.main .content .markdown pre {
+  font-family: 'Menlo', monospace;
+  font-size: 0.98rem;
+  background-color: #f7f7f7;
+}
+div.main .content .markdown code {
+  /* enclosed by single backtick (`) */
+  padding: .15em .5em;
+  border-radius: 2px;
+}
+div.main .content .markdown pre {
+  /* Hugo specific: consider using the 'highlight' shortcode */
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  line-height: 1.5em;
+  white-space: pre;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+div.main .content .markdown pre code {
+  /* enclosed by 4 backticks (````) */
+  padding: 0;
+  font-size: 0.9rem;
+}
+div.main .content .markdown a code {
+  color: #428bca !important;
+}
+div.main .content .markdown a code:hover {
+  text-decoration: underline;
+}
+div.main .content .markdown p {
+  
+  text-align: justify;
+  
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+div.main .content .markdown ul,
+div.main .content .markdown ol,
+div.main .content .markdown dl {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+div.main .content .markdown dt {
+  font-weight: bold;
+}
+div.main .content .markdown dd {
+  margin-bottom: .5rem;
+}
+div.main .content .markdown ul {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin-bottom: 1.25rem;
+}
+div.main .content .markdown ol {
+  list-style-type: decimal;
+  margin-bottom: 1.25rem;
+}
+div.main .content .markdown li {
+  margin-left: 2em;
+}
+div.main .content .markdown em {
+  font-style: italic;
+}
+div.main .content .markdown strong {
+  font-weight: 700;
+}
+div.main .content .markdown hr {
+  position: relative;
+  margin: 1.75rem 0;
+  border: 0;
+  border-top: 1px solid #808080;
+  border-top: 1px solid #999999;
+}
+div.main .content .markdown abbr {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #666666;
+  text-transform: uppercase;
+}
+div.main .content .markdown abbr[title] {
+  cursor: help;
+  border-bottom: 1px dotted #808080;
+}
+div.main .content .markdown blockquote {
+  padding: .5rem 1rem;
+  margin: .8rem 0;
+  color: #7a7a7a;
+  border-left: .25rem solid #e5e5e5;
+}
+div.main .content .markdown blockquote p:last-child {
+  margin-bottom: 0;
+}
+div.main .content .markdown figure {
+  width: 100%;
+  background: #fff;
+  margin-bottom: 1em;
+}
+div.main .content .markdown figure img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  position: static;
+  margin: auto;
+}
+div.main .content .markdown table {
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  border-collapse: collapse;
+}
+div.main .content .markdown td,
+div.main .content .markdown th {
+  padding: .25rem .5rem;
+  border: 1px solid #e5e5e5;
+}
+div.main .content .markdown tbody tr:nth-child(odd) td,
+div.main .content .markdown tbody tr:nth-child(odd) th {
+  background-color: #f7f7f7;
+}
+div.main .content .markdown .footnotes ol {
+  list-style-type: decimal;
+  margin-left: 16px;
+}
+div.main .content .markdown .footnotes li {
+  list-style-type: unset;
+}
+div.main .content .markdown .footnote-ref {
+  font-size: 0.7em;
+}
+div.main .content .navigation {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  padding: 2em;
+}
+div.main .content .navigation div {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  margin-top: 1em;
+}
+div.main .content .navigation .icon {
+  width: 16px;
+  height: 16px;
+}
+div.main .content .navigation a {
+  width: 250px;
+  margin: 0 1em;
+  text-align: center;
+  font-style: italic;
+  color: #313537;
+}
+div.main .content .share, div.main .content .share div {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  justify-content: center;
+}
+div.main .content .share {
+  background-color: rgba(152, 152, 152, 0.07);
+  padding: 1em 0;
+}
+div.main .content .share a {
+  margin: 0 6px;
+}
+kbd {
+  padding: 0.1em 0.6em;
+  border: 1px solid #ccc;
+  font-size: 11px;
+  font-family: Arial,Helvetica,sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  -moz-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  -webkit-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  margin: 0 0.1em;
+  text-shadow: 0 1px 0 #fff;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* Fonts */
+
+
+.wf-raleway-n4-active body, 
+.wf-raleway-n4-active div.header nav ul a,
+.wf-raleway-n7-active div.main .content .page-heading,
+.wf-raleway-n2-active div.main .container.f04 .content .num,
+.wf-raleway-n7-active div.main .content .markdown h1,
+.wf-raleway-n7-active div.main .content .markdown h2,
+.wf-raleway-n7-active div.main .content .markdown h3,
+.wf-raleway-n7-active div.main .content .markdown h4,
+.wf-raleway-n7-active div.main .content .markdown h5,
+.wf-raleway-n7-active div.main .content .markdown h6 {
+      font-family: 'Raleway';
+}
+
+.wf-merriweather-n3-active div.main .content .markdown {
+      font-family: 'Merriweather';
+}
+
+.wf-ubuntu-mono-n4-active div.main .content .markdown code,
+.wf-ubuntu-mono-n4-active div.main .content .markdown pre {
+      font-family: 'Ubuntu Mono';
+}
+
+
+</style>
+<style media="(min-width: 600px)">
+  body {
+-webkit-justify-content: center;
+-moz-justify-content: center;
+-ms-justify-content: center;
+justify-content: center;
+}
+.non-narrow.zero-top-spacing {
+padding-top: 0 !important;
+}
+section {
+padding: 0 16px;
+margin-left: 100px;
+margin-right: 100px;
+
+max-width: 750px;
+
+}
+div.column {
+padding: 0 16px;
+
+max-width: 750px;
+
+}
+div.header {
+background-color: transparent;
+}
+div.header .container {
+-webkit-justify-content: flex-start;
+-moz-justify-content: flex-start;
+-ms-justify-content: flex-start;
+justify-content: flex-start;
+}
+div.header .container .logo {
+margin: 0;
+}
+div.header-home .container .logo {
+max-width: 216px;
+margin-left: 24px;
+}
+div.header-home .name-home {
+padding-top: 30px;
+font-size: 40px;
+}
+div.header-home nav ul a {
+font-size: 18px;
+}
+div.header .content {
+-webkit-align-items: flex-start;
+-moz-align-items: flex-start;
+-ms-align-items: flex-start;
+align-items: flex-start;
+}
+div.header .name {
+color: #333333;
+}
+div.header nav {
+font-size: 14px;
+margin-bottom: 0;
+}
+div.header nav ul {
+text-align: left;
+}
+div.header nav ul a {
+color: #666666;
+}
+div.header nav ul a:hover {
+color: #333333;
+}
+div.footer {
+background-color: transparent;
+}
+div.footer .container {
+flex-direction: row;
+}
+div.footer .container a {
+margin-left: 3px;
+margin-right: 3px;
+color: #666666;
+}
+div.footer .container a:hover {
+color: #333333;
+}
+div.footer .container a .icon {
+font-size: 18px;
+}
+div.footer .container a .icon.larger {
+font-size: 20px;
+}
+div.main .content .front-matter .date,
+div.main .content .front-matter .author,
+div.main .content .front-matter .tags,
+div.main .content .front-matter .word-count,
+div.main .content .front-matter .middot:before {
+display: initial;
+}
+div.main .container.f04 {
+-webkit-justify-content: flex-start;
+-moz-justify-content: flex-start;
+-ms-justify-content: flex-start;
+justify-content: flex-start;
+}
+div.main .container.f04 .content {
+-webkit-align-items: flex-start;
+-moz-align-items: flex-start;
+-ms-align-items: flex-start;
+align-items: flex-start;
+}
+div.main .container.f04 .content .num {
+margin: 0 0 10px 0;
+font-size: 32px;
+}
+div.main .container.f04 .content .detail {
+margin-bottom: 30px;
+}
+.container {
+padding: 0 30px;
+}
+div.header {
+padding-top: 60px;
+padding-bottom: 60px;
+}
+div.footer {
+padding-top: 60px;
+padding-bottom: 60px;
+}
+div.main {
+padding-top: 0;
+}
+div.main .content {
+  
+  font-size: 16px;
+  
+}
+div.main .container .content .post-item {
+display: flex;
+list-style: none;
+padding-left: 1.5em;
+}
+div.main .container .content .post-item .meta {
+display: block;
+}
+div.main .content .markdown blockquote {
+padding-right: 5rem;
+padding-left: 1.25rem;
+}
+div.main .content .navigation {
+-webkit-flex-direction: row;
+-moz-flex-direction: row;
+-ms-flex-direction: row;
+flex-direction: row;
+}
+div.main .content .navigation div {
+margin-top: 0em;
+}
+
+</style>
+<style media="(min-width: 769px)">
+  div.main .content .markdown figure {
+width: 110%;
+margin-left: -4%;
+}
+div.main .content .markdown img {
+max-width: 110%;
+width: 110%;
+margin-left: -4%;
+}
+div.main .content .markdown pre {
+width: 110%;
+margin-left: -4%;
+}
+
+</style>
+
+<noscript>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700" rel="stylesheet">
+</noscript>
+
+
+  <style type="text/css" media="screen">
+    .hljs{display:block;background:white;padding:0.5em;color:#333333;overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}
+  </style>
+
+
+
+  <style type="text/css" media="screen">
+    .progressive{overflow:hidden;position:relative;background:#efefef}.progressive__img{width:100%;height:100%;transform:translateZ(0)}.progressive--not-loaded{filter:blur(30px)}.progressive--is-loaded{filter:blur(20px);animation:a .5s both}@keyframes a{0%{filter:blur(20px)}to{filter:blur(0)}}
+
+  </style>
+
+
+
+  <style type="text/css" media="screen">
+    /*!
+ * Social Share Kit v1.0.7 (http://socialsharekit.com)
+ * Copyright 2015 Social Share Kit / Kaspars Sprogis.
+ * Licensed under Creative Commons Attribution-NonCommercial 3.0 license:
+ * https://github.com/darklow/social-share-kit/blob/master/LICENSE
+ * ---
+ */@font-face{font-family:'social-share-kit';src:url('https://joeyworld.github.io/fonts/social-share-kit.eot');src:url('https://joeyworld.github.io/fonts/social-share-kit.eot?#iefix') format('embedded-opentype'),url('https://joeyworld.github.io/fonts/social-share-kit.woff') format('woff'),url('https://joeyworld.github.io/fonts/social-share-kit.ttf') format('truetype'),url('https://joeyworld.github.io/fonts/social-share-kit.svg#social-share-kit') format('svg');font-weight:normal;font-style:normal}.ssk:before{display:inline-block;font-family:"social-share-kit" !important;font-style:normal !important;font-weight:normal !important;font-variant:normal !important;text-transform:none !important;speak:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.ssk-facebook:before{content:"a";text-indent:4px;margin-right:-4px}.ssk-twitter:before{content:"b"}.ssk-google-plus:before{content:"v"}.ssk-google-plus-old:before{content:"c"}.ssk-email:before{content:"d";top:-1px;position:relative}.ssk-pinterest:before{content:"e"}.ssk-tumblr:before{content:"f"}.ssk-linkedin:before{content:"g"}.ssk-github:before{content:"h"}.ssk-vk:before{content:"i"}.ssk-instagram:before{content:"j"}.ssk-amazon:before{content:"k"}.ssk-skype:before{content:"s"}.ssk-youtube:before{content:"x"}.ssk-vimeo:before{content:"u"}.ssk-ebay:before{content:"p"}.ssk-apple:before{content:"l"}.ssk-behance:before{content:"q"}.ssk-dribble:before{content:"n"}.ssk-android:before{content:"o"}.ssk-whatsapp:before{content:"m"}.ssk-reddit:before{content:"r"}.ssk-reddit2:before{content:"t"}.ssk-link:before{content:"w"}.ssk{background-color:#757575;color:white;display:inline-block;font-size:22px;line-height:1px;margin-right:2px;margin-bottom:2px;padding:7px;text-align:center;text-decoration:none;transition:background-color .1s;-webkit-transition:background-color .1s;-moz-transition:background-color .1s;-ms-transition:background-color .1s;-o-transition:background-color .1s}.ssk:before,.ssk .glyphicon,.ssk .fa{position:relative;font-size:22px;top:0;vertical-align:middle}.ssk.ssk-xs,.ssk-xs>.ssk{padding:4px}.ssk.ssk-xs:before,.ssk-xs>.ssk:before,.ssk.ssk-xs .glyphicon,.ssk-xs>.ssk .glyphicon,.ssk.ssk-xs .fa,.ssk-xs>.ssk .fa{font-size:15px}.ssk.ssk-sm,.ssk-sm>.ssk{padding:5px}.ssk.ssk-sm:before,.ssk-sm>.ssk:before,.ssk.ssk-sm .glyphicon,.ssk-sm>.ssk .glyphicon,.ssk.ssk-sm .fa,.ssk-sm>.ssk .fa{font-size:20px}.ssk.ssk-lg,.ssk-lg>.ssk{padding:9px}.ssk.ssk-lg:before,.ssk-lg>.ssk:before,.ssk.ssk-lg .glyphicon,.ssk-lg>.ssk .glyphicon,.ssk.ssk-lg .fa,.ssk-lg>.ssk .fa{font-size:28px}.ssk:last-child{margin-right:0}.ssk:hover{background-color:#424242}.ssk:hover,.ssk:focus{color:#fff;text-decoration:none}.ssk.ssk-round,.ssk-round .ssk{border-radius:50%}.ssk.ssk-round:before,.ssk-round .ssk:before{text-indent:0;margin-right:0}.ssk.ssk-rounded,.ssk-rounded .ssk{border-radius:15%}.ssk.ssk-icon{color:#757575;padding:2px;font-size:24px}.ssk.ssk-icon,.ssk.ssk-icon:hover{background-color:transparent}.ssk.ssk-icon:hover{color:#424242}.ssk.ssk-icon.ssk-xs,.ssk-xs>.ssk.ssk-icon{font-size:16px}.ssk.ssk-icon.ssk-sm,.ssk-sm>.ssk.ssk-icon{font-size:20px}.ssk.ssk-icon.ssk-lg,.ssk-lg>.ssk.ssk-icon{font-size:28px}.ssk.ssk-text{overflow:hidden;font-size:17px;line-height:normal;padding-right:10px}.ssk.ssk-text:before,.ssk.ssk-text .glyphicon,.ssk.ssk-text .fa{margin:-7px 10px -7px -7px;padding:7px;background-color:rgba(0,0,0,0.15);vertical-align:bottom;text-indent:0}.ssk-block .ssk.ssk-text{display:block;margin-right:0;text-align:left}.ssk.ssk-text.ssk-xs,.ssk-xs>.ssk.ssk-text{font-size:12px;padding-right:6px}.ssk.ssk-text.ssk-xs:before,.ssk-xs>.ssk.ssk-text:before,.ssk.ssk-text.ssk-xs .glyphicon,.ssk-xs>.ssk.ssk-text .glyphicon,.ssk.ssk-text.ssk-xs .fa,.ssk-xs>.ssk.ssk-text .fa{margin:-4px 6px -4px -4px;padding:4px}.ssk.ssk-text.ssk-sm,.ssk-sm>.ssk.ssk-text{font-size:16px;padding-right:7px}.ssk.ssk-text.ssk-sm:before,.ssk-sm>.ssk.ssk-text:before,.ssk.ssk-text.ssk-sm .glyphicon,.ssk-sm>.ssk.ssk-text .glyphicon,.ssk.ssk-text.ssk-sm .fa,.ssk-sm>.ssk.ssk-text .fa{margin:-5px 7px -5px -5px;padding:5px}.ssk.ssk-text.ssk-lg,.ssk-lg>.ssk.ssk-text{font-size:22px;padding-right:13px}.ssk.ssk-text.ssk-lg:before,.ssk-lg>.ssk.ssk-text:before,.ssk.ssk-text.ssk-lg .glyphicon,.ssk-lg>.ssk.ssk-text .glyphicon,.ssk.ssk-text.ssk-lg .fa,.ssk-lg>.ssk.ssk-text .fa{margin:-9px 13px -9px -9px;padding:9px}.ssk-group,.ssk-sticky{font-size:0}.ssk-sticky{top:0;position:fixed;z-index:2000}.ssk-sticky .ssk{transition:padding .1s ease-out;-webkit-transition:padding .1s ease-out;-moz-transition:padding .1s ease-out;-ms-transition:padding .1s ease-out;-o-transition:padding .1s ease-out;margin:0}@media (min-width:768px){.ssk-sticky.ssk-left .ssk,.ssk-sticky.ssk-right .ssk{display:block;clear:both}.ssk-sticky.ssk-left.ssk-center,.ssk-sticky.ssk-right.ssk-center{top:50%;transform:translateY(-50%);-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%)}.ssk-sticky.ssk-left{left:0}.ssk-sticky.ssk-left .ssk{float:left}.ssk-sticky.ssk-left .ssk:hover{padding-left:15px}.ssk-sticky.ssk-right{right:0}.ssk-sticky.ssk-right .ssk{float:right}.ssk-sticky.ssk-right .ssk:hover{padding-right:15px}}.ssk-sticky.ssk-bottom{font-size:0;top:auto;bottom:0}.ssk-sticky.ssk-bottom.ssk-center{left:50%;right:auto;transform:translateX(-50%);-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);-ms-transform:translateX(-50%);-o-transform:translateX(-50%)}.ssk-sticky.ssk-bottom .ssk{vertical-align:bottom}.ssk-sticky.ssk-bottom .ssk:hover{padding-bottom:15px}.ssk-sticky.ssk-round.ssk-xs .ssk:hover{padding:8px}.ssk-sticky.ssk-round.ssk-sm .ssk:hover{padding:9px}.ssk-sticky.ssk-round .ssk:hover{padding:11px}.ssk-sticky.ssk-round.ssk-lg .ssk:hover{padding:13px}@media (max-width:767px){.ssk-sticky{left:0;right:0;bottom:0;top:auto;width:100%;display:flex !important;flex-direction:row;flex-wrap:nowrap}.ssk-sticky.ssk-sticky-hide-xs{display:none !important}.ssk-sticky .ssk{flex:1;width:auto}.ssk-sticky .ssk .ssk-num{display:none}}.ssk-count{padding-top:20px}.ssk-count .ssk{position:relative}.ssk-count .ssk-num{border-radius:4px;color:#8f8f8f;background-color:rgba(50,50,50,0.03);display:block;font-size:12px;left:0;line-height:20px;position:absolute;right:0;text-align:center;top:-20px}@media (min-width:768px){.ssk-count.ssk-sticky{padding-top:0}.ssk-count.ssk-sticky.ssk-left .ssk-num,.ssk-count.ssk-sticky.ssk-right .ssk-num{top:20%;background-color:transparent}.ssk-count.ssk-sticky.ssk-left .ssk-num{left:100%;margin-left:5px}.ssk-count.ssk-sticky.ssk-right .ssk-num{right:115%;margin-left:-100%;text-align:right}}.ssk-facebook{background-color:#3B5998}.ssk-grayscale>.ssk-facebook{background-color:#757575}.ssk-facebook:hover{background-color:#2d4373}.ssk-facebook:hover{background-color:#2d4373}.ssk-grayscale>.ssk-facebook:hover{background-color:#3B5998}.ssk-facebook.ssk-icon{color:#3B5998}.ssk-facebook.ssk-icon:hover{color:#2d4373}.ssk-facebook.ssk-icon:before{text-indent:0;margin-right:0}.ssk-twitter{background-color:#1DA1F2}.ssk-grayscale>.ssk-twitter{background-color:#757575}.ssk-twitter:hover{background-color:#0c85d0}.ssk-twitter:hover{background-color:#0c85d0}.ssk-grayscale>.ssk-twitter:hover{background-color:#1DA1F2}.ssk-twitter.ssk-icon{color:#1DA1F2}.ssk-twitter.ssk-icon:hover{color:#0c85d0}.ssk-google-plus{background-color:#EA4335}.ssk-grayscale>.ssk-google-plus{background-color:#757575}.ssk-google-plus:hover{background-color:#d62516}.ssk-google-plus:hover{background-color:#d62516}.ssk-grayscale>.ssk-google-plus:hover{background-color:#EA4335}.ssk-google-plus.ssk-icon{color:#EA4335}.ssk-google-plus.ssk-icon:hover{color:#d62516}.ssk-pinterest{background-color:#BD081C}.ssk-grayscale>.ssk-pinterest{background-color:#757575}.ssk-pinterest:hover{background-color:#8c0615}.ssk-pinterest:hover{background-color:#8c0615}.ssk-grayscale>.ssk-pinterest:hover{background-color:#BD081C}.ssk-pinterest.ssk-icon{color:#BD081C}.ssk-pinterest.ssk-icon:hover{color:#8c0615}.ssk-tumblr{background-color:#395773}.ssk-grayscale>.ssk-tumblr{background-color:#757575}.ssk-tumblr:hover{background-color:#283d51}.ssk-tumblr:hover{background-color:#283d51}.ssk-grayscale>.ssk-tumblr:hover{background-color:#395773}.ssk-tumblr.ssk-icon{color:#395773}.ssk-tumblr.ssk-icon:hover{color:#283d51}.ssk-email{background-color:#757575}.ssk-grayscale>.ssk-email{background-color:#757575}.ssk-email:hover{background-color:#5b5b5b}.ssk-email:hover{background-color:#5b5b5b}.ssk-grayscale>.ssk-email:hover{background-color:#757575}.ssk-grayscale>.ssk-email:hover{background-color:#5b5b5b}.ssk-email.ssk-icon{color:#757575}.ssk-email.ssk-icon:hover{color:#5b5b5b}.ssk-vk{background-color:#54769a}.ssk-grayscale>.ssk-vk{background-color:#757575}.ssk-vk:hover{background-color:#425d79}.ssk-vk:hover{background-color:#425d79}.ssk-grayscale>.ssk-vk:hover{background-color:#54769a}.ssk-vk.ssk-icon{color:#54769a}.ssk-vk.ssk-icon:hover{color:#425d79}.ssk-linkedin{background-color:#1c87bd}.ssk-grayscale>.ssk-linkedin{background-color:#757575}.ssk-linkedin:hover{background-color:#156791}.ssk-linkedin:hover{background-color:#156791}.ssk-grayscale>.ssk-linkedin:hover{background-color:#1c87bd}.ssk-linkedin.ssk-icon{color:#1c87bd}.ssk-linkedin.ssk-icon:hover{color:#156791}.ssk-whatsapp{background-color:#34AF23}.ssk-grayscale>.ssk-whatsapp{background-color:#757575}.ssk-whatsapp:hover{background-color:#27851a}.ssk-whatsapp:hover{background-color:#27851a}.ssk-grayscale>.ssk-whatsapp:hover{background-color:#34AF23}.ssk-whatsapp.ssk-icon{color:#34AF23}.ssk-whatsapp.ssk-icon:hover{color:#27851a}.ssk-reddit{background-color:#5f99cf}.ssk-grayscale>.ssk-reddit{background-color:#757575}.ssk-reddit:hover{background-color:#3a80c1}.ssk-reddit:hover{background-color:#3a80c1}.ssk-grayscale>.ssk-reddit:hover{background-color:#5f99cf}.ssk-reddit.ssk-icon{color:#5f99cf}.ssk-reddit.ssk-icon:hover{color:#3a80c1}.ssk-reddit2{background-color:#5f99cf}.ssk-grayscale>.ssk-reddit2{background-color:#757575}.ssk-reddit2:hover{background-color:#3a80c1}.ssk-reddit2:hover{background-color:#3a80c1}.ssk-grayscale>.ssk-reddit2:hover{background-color:#5f99cf}.ssk-reddit2.ssk-icon{color:#5f99cf}.ssk-reddit2.ssk-icon:hover{color:#3a80c1}.ssk-turquoise{background-color:#1abc9c}.ssk-turquoise:hover{background-color:#148f77}.ssk-emerald{background-color:#2ecc71}.ssk-emerald:hover{background-color:#25a25a}.ssk-peter-river{background-color:#3498db}.ssk-peter-river:hover{background-color:#217dbb}.ssk-belize-hole{background-color:#2980b9}.ssk-belize-hole:hover{background-color:#20638f}.ssk-amethyst{background-color:#9b59b6}.ssk-amethyst:hover{background-color:#804399}.ssk-wisteria{background-color:#8e44ad}.ssk-wisteria:hover{background-color:#703688}.ssk-wet-asphalt{background-color:#34495e}.ssk-wet-asphalt:hover{background-color:#222f3d}.ssk-midnight-blue{background-color:#2c3e50}.ssk-midnight-blue:hover{background-color:#1a242f}.ssk-green-sea{background-color:#16a085}.ssk-green-sea:hover{background-color:#107360}.ssk-nephritis{background-color:#27ae60}.ssk-nephritis:hover{background-color:#1e8449}.ssk-sunflower{background-color:#f1c40f}.ssk-sunflower:hover{background-color:#c29d0b}.ssk-orange{background-color:#f39c12}.ssk-orange:hover{background-color:#c87f0a}.ssk-carrot{background-color:#e67e22}.ssk-carrot:hover{background-color:#bf6516}.ssk-pumpkin{background-color:#d35400}.ssk-pumpkin:hover{background-color:#a04000}.ssk-alizarin{background-color:#e74c3c}.ssk-alizarin:hover{background-color:#d62c1a}.ssk-pomegranate{background-color:#c0392b}.ssk-pomegranate:hover{background-color:#962d22}.ssk-clouds{background-color:#cfd9db}.ssk-clouds:hover{background-color:#b1c2c6}.ssk-concrete{background-color:#95a5a6}.ssk-concrete:hover{background-color:#798d8f}.ssk-silver{background-color:#bdc3c7}.ssk-silver:hover{background-color:#a1aab0}.ssk-asbestos{background-color:#7f8c8d}.ssk-asbestos:hover{background-color:#667273}.ssk-dark-gray{background-color:#555}.ssk-dark-gray:hover{background-color:#3b3b3b}.ssk-black{background-color:#333}.ssk-black:hover{background-color:#1a1a1a}
+  </style>
+
+
+
+
+
+
+
+<link rel="shortcut icon"
+
+    href="https://joeyworld.github.io/img/profile.jpg"
+
+>
+
+
+
+
+</head>
+
+
+<body>
+
+
+<div class="header column">
+
+    <div class="container">
+        
+        <a href="https://joeyworld.github.io/"><img class="logo" src="https://joeyworld.github.io/img/profile.jpg" alt="logo"></a>
+        
+        <div class="content">
+            <a href="https://joeyworld.github.io/"><div class="name"><h1>JoeyLog</h1></div></a>
+            <nav>
+                <ul>
+                    
+                            <li><a href="https://joeyworld.github.io/blog/">Blog</a></li>
+                    
+                    
+                        
+                            
+                        
+                    
+                        
+                            
+                            <li><a href="https://joeyworld.github.io/algorithms">algorithms</a></li>
+                            
+                        
+                    
+                    
+                        
+                            <li><a href="https://joeyworld.github.io/about/">About Me</a></li>
+                        
+                    
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="main post non-narrow zero-top-spacing column">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    
+    Django 커스텀 미들웨어 만들기 &#43; Rest Framework 를 위한 HTTP Response Formatting
+    
+
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Fri Jun 8 2018 19:44:30 KST">Jun 8, 2018</div>
+                    
+                        
+                    
+                    
+                    <div class="reading-time middot">8 minute read</div>
+                    
+                    
+                      <div class="tags">
+                    
+                        <ul>
+                          
+                            <li class="middot"><a href="https://joeyworld.github.io/tags/python">Python</a> </li>
+                          
+                            <li class="middot"><a href="https://joeyworld.github.io/tags/django">Django</a> </li>
+                          
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <ul>
+                          
+                          
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="markdown">
+                
+    
+    <h1 id="들어가며">들어가며</h1>
+<p>이 포스팅은 다음에 관해서 다룬다:</p>
+<ul>
+<li>미들웨어란?</li>
+<li>미들웨어 설정법</li>
+<li>나만의 미들웨어를 어떻게 작성하는가, 그리고 그 예시</li>
+</ul>
+<p>아쉽게도, 이 포스팅에서 사용되는 예제 코드에 대한 파이썬 문법 및 standard library 사용법은 다루지 않는다 (예시: 정규식 사용을 위한 <code>re</code> 모듈). 포스팅을 보시다 막히시면 파이썬 공식 문서 혹은 구글링을 통하여 지식을 습득하시길 권장드린다.</p>
+<p>또한, 이 포스팅에서 사용하는 예제 코드는 <a href="http://www.django-rest-framework.org/">Rest Framework</a> 를 활용한다. 따라서, Rest Framework 를 사용하지 않으시는 독자분께서는 &ldquo;커스텀 미들웨어 작성법&rdquo; 단락까지만 읽으셔도 무방하다.</p>
+<h1 id="미들웨어란">미들웨어란?</h1>
+<p>공식 문서를 읽어보자.</p>
+<blockquote>
+<p>Middleware is a framework of hooks into Django’s request/response processing. It’s a light, low-level “plugin” system for globally altering Django’s input or output.</p>
+</blockquote>
+<p>쉽게 말해서, http 요청 / 응답 처리 중간에서 작동하는 시스템이다.<br>
+장고는 http 요청이 들어오면 <strong>미들웨어를 거쳐서</strong> 해당 URL 에 등록되어 있는 뷰로 연결해주고, http 응답 역시 <strong>미들웨어를 거쳐서</strong> 내보낸다.</p>
+<p>이를 사진으로 표현하면 다음과 같다.</p>
+<p><figure class="progressive"><img class="progressive__img progressive--not-loaded" data-progressive="https://joeyworld.github.io/img/django-middleware.png" src="https://joeyworld.github.io/img/low/django-middleware.png" alt="장고의 http request/response 처리 흐름도"></p></figure>
+<p>장고에서 미들웨어는 http 요청 혹은 응답의 전처리에 사용된다.</p>
+<h1 id="미들웨어-등록-설정에-관하여">미들웨어 등록, 설정에 관하여</h1>
+<p>미들웨어를 등록하는 방법은 간단하다. 설정에서 <code>MIDDLEWARE</code> 항목에 추가하고자 하는 미들웨어의 full python path 를 추가해주면 끝이다.<br>
+<code>django-admin startproject</code> 명령어로 장고 프로젝트를 생성하면 기본적으로 다음과 같은 미들웨어들이 등록되어 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">MIDDLEWARE <span style="color:#f92672">=</span> [
+    <span style="color:#e6db74">&#39;django.middleware.security.SecurityMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.middleware.common.CommonMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;</span>,
+]
+</code></pre></div><h2 id="미들웨어-순서의-의미">미들웨어 순서의 의미</h2>
+<p>미들웨어 등록에서 가장 중요한 것은 바로 <strong>미들웨어를 등록하는 순서</strong> 이다.<br>
+위의 사진을 한번 더 들여다보자. 눈치 빠르신 분들은 눈치 채셨겠지만, 장고 미들웨어 등록 순서가 가지는 의미는 다음과 같다:</p>
+<ul>
+<li>장고는 http request 가 들어오면 <strong>위에서부터 아래로</strong> 미들웨어를 적용시킨다.</li>
+<li>장고는 http response 가 나갈 때 <strong>아래서부터 위로</strong> 미들웨어를 적용시킨다.</li>
+</ul>
+<h1 id="커스텀-미들웨어-작성법">커스텀 미들웨어 작성법</h1>
+<p>장고에서 커스텀 미들웨어는 아래와 같이, 함수 혹은 클래스로 작성할 수 있다.</p>
+<h2 id="함수로-작성">함수로 작성</h2>
+<p>미들웨어를 함수로 작성하게 될 경우에는, 팩토리 형식을 사용한다.</p>
+<p>미들웨어 팩토리(아래 예시에서는 <code>my_middleware</code>) 는 <code>get_response</code> 함수를 받는 하나의 함수이며, <code>middleware</code> 이라는 내부 함수를 반환하게 된다.<br>
+또한, <code>my_middleware</code> 함수 상단에서는, 최초 설정 및 초기화를 진행하게 된다.</p>
+<p><code>middleware</code> 이라는 내부 함수에서는, request 를 받아서 최종적으로 response 를 반환한다.<br>
+이 함수는, 중간의 <code>get_response</code> 함수를 호출하기 전과 후로 나누어서 생각할 수 있는데,<br>
+view 가 호출되기 전 / view 가 호출되고 난 후 처리할 일들을 나누어서 작성해 주면 된다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">my_middleware</span>(get_response):
+    <span style="color:#75715e"># 최초 설정 및 초기화</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">middleware</span>(request):
+        <span style="color:#75715e"># 뷰가 호출되기 전에 실행될 코드들</span>
+
+        response <span style="color:#f92672">=</span> get_response(request)
+
+        <span style="color:#75715e"># 뷰가 호출된 뒤에 실행될 코드들</span>
+
+        <span style="color:#66d9ef">return</span> response
+
+    <span style="color:#66d9ef">return</span> middleware
+</code></pre></div><h2 id="클래스로-작성">클래스로 작성</h2>
+<p>클래스로 미들웨어를 작성하게 되면, 보다 더욱 구조화된 미들웨어를 작성할 수 있게 된다.</p>
+<p>클래스 미들웨어는 아래와 같이, 초기 생성자(<code>__init__</code> 함수) 와 호출 함수(<code>__call__</code> 함수) 두 부분으로 나뉜다.</p>
+<p><code>__init__</code> 함수에서는 최초 설정 및 초기화를 하게 되며, <code>__call__</code> 함수는 request 를 받아서 response 를 리턴하게 되는 함수이다.<br>
+<code>__call__</code> 함수 역시, <code>get_response</code> 가 호출되기 전과 후로 나누어서 생각할 수 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyMiddleware</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, get_response):
+        self<span style="color:#f92672">.</span>get_response <span style="color:#f92672">=</span> get_response
+        <span style="color:#75715e"># 최초 설정 및 초기화</span>
+
+    <span style="color:#66d9ef">def</span> __call__(self, request):
+        <span style="color:#75715e"># 뷰가 호출되기 전에 실행될 코드들</span>
+
+        response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_response(request)
+
+        <span style="color:#75715e"># 뷰가 호출된 뒤에 실행될 코드들</span>
+
+        <span style="color:#66d9ef">return</span> response
+</code></pre></div><h2 id="get_response-callable"><code>get_response</code> callable</h2>
+<p><code>get_response</code> 는 장고에서 미들웨어를 호출할 때 넘겨주는 하나의 함수이며, view 일 수도 있고, 혹은 다른 미들웨어 일 수도 있다.</p>
+<h2 id="미들웨어-훅middleware-hook">미들웨어 훅(Middleware Hook)</h2>
+<p>클래스 형식으로 미들웨어를 정의하게 되면, http 요청 혹은 응답에 대한 처리를 하게 되는 메소드를 추가 정의할 수 있는데, 이를 미들웨어 훅(Middleware Hook) 이라고 한다.</p>
+<p>만약 미들웨어가 http 요청에 대한 미들웨어라면, 다음 두 가지의 훅 중 하나를 구현하면 된다:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_request</span>(request)
+
+<span style="color:#75715e"># 장고가 view 를 호출하기 바로 직전에 불리는 훅이다</span>
+<span style="color:#75715e"># None 이나 HttpResponse 객체를 리턴해야 한다.</span>
+<span style="color:#75715e"># None 을 리턴하면, view 를 호출하고, HttpResponse 객체를 리턴하면,</span>
+<span style="color:#75715e"># 해당 HttpResponse 를 미들웨어로 다시 쏘아 올린다.</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_view</span>(request, view_func, view_args, view_kwargs)
+</code></pre></div><p>만약 미들웨어가 http 응답에 대한 미들웨어라면, 다음 세 가지의 훅 중 하나를 구현하면 된다:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># view 가 exception 을 발생시키면 호출된다.</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_exception</span>(request, exception)
+
+<span style="color:#75715e"># response 가 템플릿을 반환하는 경우에만</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_template_response</span>(request, response)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_response</span>(request, response)
+</code></pre></div><h1 id="예시--rest-framwork-를-위한-http-response-formatting">예시 : Rest Framwork 를 위한 HTTP Response Formatting</h1>
+<p>지금까지 미들웨어가 무엇인지, 그리고 어떤 식으로 만드는지에 대하여 알아보았으니, 이번에는 직접 만들어보자!</p>
+<h2 id="개요">개요</h2>
+<p>이번에 만들어 볼 미들웨어는 &ldquo;HTTP 응답 형식을 정해주는 미들웨어&rdquo; 이다.
+많은 상용 API 를 살펴보면, http 응답 형태가 매우 일관성 있다. 예시로 Slack 의 API 를 살펴보면,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;ok&#34;</span>: <span style="color:#66d9ef">true</span>,
+  <span style="color:#f92672">&#34;stuff&#34;</span>: <span style="color:#e6db74">&#34;This is good&#34;</span>
+}
+</code></pre></div><p>위와 같이 &ldquo;성공했는지 여부&rdquo;, 그리고 &ldquo;응답 데이터 혹은 에러 메시지&rdquo; 와 같은 (혹은 비슷한) 형식의 일관성 있는 응답을 리턴하도록 하는 경우가 많다.</p>
+<p>Django 에서 API 응답을 보내줄 때에는 대부분 이런 형태로 코딩을 하는 경우가 많다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SampleView</span>(APIView):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self, request, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        <span style="color:#75715e"># ...</span>
+        <span style="color:#66d9ef">return</span> Response({
+            <span style="color:#e6db74">&#39;success&#39;</span>: True,
+            <span style="color:#e6db74">&#39;data&#39;</span>: <span style="color:#e6db74">&#39;sample data&#39;</span>
+        })
+</code></pre></div><p>하지만 모든 view 함수에서 일일이 이런 식으로 http 응답 형태를 정하는 것은 매우 귀찮은 일이며, 중복되는 코드가 많이 생기므로 구조적으로도 깔끔하지 못하다.<br>
+따라서, <strong>미들웨어를 활용하여</strong> 우리의 http 응답이 <strong>미들웨어를 거쳐서 자동으로 formatting 되어서 나가게</strong> 하는 방법을 사용해보자!</p>
+<h2 id="우리가-원하는-결과">우리가 원하는 결과</h2>
+<p>에를 들어, http 응답으로 <code>{&quot;some&quot;: &quot;data&quot;}</code> 같은 JSON 데이터를 보내고자 할 때, 다음과 같은 형식으로 보내질 것이다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
+  <span style="color:#f92672">&#34;result&#34;</span>: {
+    <span style="color:#f92672">&#34;some&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>
+  },
+  <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#66d9ef">null</span>
+}
+</code></pre></div><h2 id="미들웨어-클래스-만들기">미들웨어 클래스 만들기</h2>
+<p>우리의 미들웨어 클래스 이름을 <code>ResponseFormattingMiddleware</code> 이라고 정하고, 다음의 클래스 변수를 만들자.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> re
+<span style="color:#f92672">from</span> rest_framework.status <span style="color:#f92672">import</span> is_client_error, is_success
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ResponseFormattingMiddleware</span>:
+    METHOD <span style="color:#f92672">=</span> (<span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#e6db74">&#39;POST&#39;</span>, <span style="color:#e6db74">&#39;PUT&#39;</span>, <span style="color:#e6db74">&#39;PATCH&#39;</span>, <span style="color:#e6db74">&#39;DELETE&#39;</span>)
+</code></pre></div><p>Http 요청 중 <code>METHOD</code> 에 포함되어 있는 형식에 대해서만 미들웨어가 작동하도록 하기 위함이다.<br>
+그리고, 다음과 같이 initializer 를 만들어주자.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> __init__(self, get_response):
+    self<span style="color:#f92672">.</span>get_response <span style="color:#f92672">=</span> get_response
+    self<span style="color:#f92672">.</span>API_URLS <span style="color:#f92672">=</span> [
+        re<span style="color:#f92672">.</span>compile(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^(.*)/api&#39;</span>),
+        re<span style="color:#f92672">.</span>compile(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^api&#39;</span>),
+    ]
+</code></pre></div><p><code>re</code> 는 정규식(regex) 계산을 위한 파이썬 모듈이다.<br>
+URL 에 <code>api</code> 가 포함되어 있는 요청에 대해서만 미들웨어가 작동하도록 하기 위해서, <code>API_URLS</code> 라는 인스턴스 변수를 만들었다.</p>
+<h2 id="__call__-메소드-만들기"><code>__call__</code> 메소드 만들기</h2>
+<p>그 다음 우리가 작성할 메소드는 바로 <code>__call__</code> 메소드이다.<br>
+공식 문서를 읽어보자. 이 메소드는 &ldquo;클래스의 인스턴스가 함수처럼 호출될 때&rdquo; 불리는 메소드이다.</p>
+<blockquote>
+<p>object.<strong>call</strong>(self[, args&hellip;])<br>
+Called when the instance is “called” as a function; if this method is defined, x(arg1, arg2, &hellip;) is a shorthand for x.<strong>call</strong>(arg1, arg2, &hellip;).</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> __call__(self, request):
+    response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_response(request)
+    <span style="color:#66d9ef">if</span> hasattr(self, <span style="color:#e6db74">&#39;process_response&#39;</span>):
+        response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>process_response(request, response)
+    <span style="color:#66d9ef">return</span> response
+</code></pre></div><p>우선 <code>get_response</code> 를 호출하여 http 응답을 가져온 뒤,<br>
+<code>process_response</code> 가 정의되어 있다면, <code>process_response</code> 함수를 호출해 http 응답을 처리하는 형식이다.</p>
+<h2 id="process_response-메소드-만들기"><code>process_response</code> 메소드 만들기</h2>
+<p>우리의 미들웨어는 &ldquo;http 응답을 처리하는 미들웨어&rdquo; 이므로, <code>process_response</code> 메소드를 정의하여 http 응답을 처리하도록 만들어야 한다.<br>
+눈치 빠르신 분들은 눈치 채셨겠지만, 우리는 여기서 <strong>http 응답을 포맷팅 해주는 로직</strong>을 짤 것이다.</p>
+<p>우선, &ldquo;현재 미들웨어가 작동해야 하는 조건&rdquo; 인지를 검사해야 한다. 미들웨어가 작동할 조건은 다음과 같다.</p>
+<ul>
+<li>유효한 URL</li>
+<li>유효한 http 요청</li>
+</ul>
+<p>이는 다음과 같은 코드를 <code>process_response</code> 최상단에 삽입하여서 검사할 수 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">path <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>path_info<span style="color:#f92672">.</span>lstrip(<span style="color:#e6db74">&#39;/&#39;</span>)
+valid_urls <span style="color:#f92672">=</span> (url<span style="color:#f92672">.</span>match(path) <span style="color:#66d9ef">for</span> url <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>API_URLS)
+
+<span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>method <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>METHOD <span style="color:#f92672">and</span> any(valid_urls):
+    response_format <span style="color:#f92672">=</span> {
+        <span style="color:#e6db74">&#39;success&#39;</span>: is_success(response<span style="color:#f92672">.</span>status_code),
+        <span style="color:#e6db74">&#39;result&#39;</span>: {},
+        <span style="color:#e6db74">&#39;message&#39;</span>: None
+    }
+</code></pre></div><p>그 다음은, view 에서 넘어온 response 에 데이터가 있는지를 검사해야 한다.<br>
+만약 있다면, 데이터를 우리가 정한 응답 format 에 맞춰서 재구성해야 하며, 없다면 그냥 response format 그대로 http 응답 데이터를 구성하면 된다.</p>
+<p>다음과 같은 코드를 삽입함으로써 실행할 수 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">if</span> hasattr(response, <span style="color:#e6db74">&#39;data&#39;</span>) <span style="color:#f92672">and</span> \
+        getattr(response, <span style="color:#e6db74">&#39;data&#39;</span>) <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> None:
+    data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>data
+    <span style="color:#66d9ef">try</span>:
+        response_format[<span style="color:#e6db74">&#39;message&#39;</span>] <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;message&#39;</span>)
+    <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">KeyError</span>, <span style="color:#a6e22e">TypeError</span>):
+        response_format<span style="color:#f92672">.</span>update({
+            <span style="color:#e6db74">&#39;result&#39;</span>: data
+        })
+    <span style="color:#66d9ef">finally</span>:
+        <span style="color:#66d9ef">if</span> is_client_error(response<span style="color:#f92672">.</span>status_code):
+            response_format[<span style="color:#e6db74">&#39;result&#39;</span>] <span style="color:#f92672">=</span> None
+            response_format[<span style="color:#e6db74">&#39;message&#39;</span>] <span style="color:#f92672">=</span> data
+        <span style="color:#66d9ef">else</span>:
+            response_format[<span style="color:#e6db74">&#39;result&#39;</span>] <span style="color:#f92672">=</span> data
+
+        response<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> response_format
+        response<span style="color:#f92672">.</span>content <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>render()<span style="color:#f92672">.</span>rendered_content
+<span style="color:#66d9ef">else</span>:
+    response<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> response_format
+</code></pre></div><p>그리고, 마지막으로 <code>response</code> 를 리턴해 주면 우리의 미들웨어는 완성된다!</p>
+<h2 id="미들웨어-등록-후-테스트-해보기">미들웨어 등록 후 테스트 해보기</h2>
+<p>우리의 미들웨어 클래스는 다음과 같이 구현되었다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> re
+<span style="color:#f92672">from</span> rest_framework.status <span style="color:#f92672">import</span> is_client_error, is_success
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ResponseFormattingMiddleware</span>:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Rest Framework 을 위한 전용 커스텀 미들웨어에 대해 response format 을 자동으로 세팅
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    METHOD <span style="color:#f92672">=</span> (<span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#e6db74">&#39;POST&#39;</span>, <span style="color:#e6db74">&#39;PUT&#39;</span>, <span style="color:#e6db74">&#39;PATCH&#39;</span>, <span style="color:#e6db74">&#39;DELETE&#39;</span>)
+
+    <span style="color:#66d9ef">def</span> __init__(self, get_response):
+        self<span style="color:#f92672">.</span>get_response <span style="color:#f92672">=</span> get_response
+        self<span style="color:#f92672">.</span>API_URLS <span style="color:#f92672">=</span> [
+            re<span style="color:#f92672">.</span>compile(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^(.*)/api&#39;</span>),
+            re<span style="color:#f92672">.</span>compile(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^api&#39;</span>),
+        ]
+
+    <span style="color:#66d9ef">def</span> __call__(self, request):
+        response <span style="color:#f92672">=</span> None
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> response:
+            response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_response(request)
+        <span style="color:#66d9ef">if</span> hasattr(self, <span style="color:#e6db74">&#39;process_response&#39;</span>):
+            response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>process_response(request, response)
+        <span style="color:#66d9ef">return</span> response
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_response</span>(self, request, response):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        API_URLS 와 method 가 확인이 되면
+</span><span style="color:#e6db74">        response 로 들어온 data 형식에 맞추어
+</span><span style="color:#e6db74">        response_format 에 넣어준 후 response 반환
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        path <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>path_info<span style="color:#f92672">.</span>lstrip(<span style="color:#e6db74">&#39;/&#39;</span>)
+        valid_urls <span style="color:#f92672">=</span> (url<span style="color:#f92672">.</span>match(path) <span style="color:#66d9ef">for</span> url <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>API_URLS)
+
+        <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>method <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>METHOD <span style="color:#f92672">and</span> any(valid_urls):
+            response_format <span style="color:#f92672">=</span> {
+                <span style="color:#e6db74">&#39;success&#39;</span>: is_success(response<span style="color:#f92672">.</span>status_code),
+                <span style="color:#e6db74">&#39;result&#39;</span>: {},
+                <span style="color:#e6db74">&#39;message&#39;</span>: None
+            }
+
+            <span style="color:#66d9ef">if</span> hasattr(response, <span style="color:#e6db74">&#39;data&#39;</span>) <span style="color:#f92672">and</span> \
+                    getattr(response, <span style="color:#e6db74">&#39;data&#39;</span>) <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> None:
+                data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>data
+                <span style="color:#66d9ef">try</span>:
+                    response_format[<span style="color:#e6db74">&#39;message&#39;</span>] <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;message&#39;</span>)
+                <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">KeyError</span>, <span style="color:#a6e22e">TypeError</span>):
+                    response_format<span style="color:#f92672">.</span>update({
+                        <span style="color:#e6db74">&#39;result&#39;</span>: data
+                    })
+                <span style="color:#66d9ef">finally</span>:
+                    <span style="color:#66d9ef">if</span> is_client_error(response<span style="color:#f92672">.</span>status_code):
+                        response_format[<span style="color:#e6db74">&#39;result&#39;</span>] <span style="color:#f92672">=</span> None
+                        response_format[<span style="color:#e6db74">&#39;message&#39;</span>] <span style="color:#f92672">=</span> data
+                    <span style="color:#66d9ef">else</span>:
+                        response_format[<span style="color:#e6db74">&#39;result&#39;</span>] <span style="color:#f92672">=</span> data
+
+                    response<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> response_format
+                    response<span style="color:#f92672">.</span>content <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>render()<span style="color:#f92672">.</span>rendered_content
+            <span style="color:#66d9ef">else</span>:
+                response<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> response_format
+
+        <span style="color:#66d9ef">return</span> response
+</code></pre></div><p>그 다음, 설정의 <code>MIDDLEWARE</code> 로 가서 우리의 미들웨어를 <strong>맨 밑에다</strong> 추가하자.<br>
+맨 밑에다 추가하는 이유는, <strong>장고의 기본 미들웨어들이 요청들을 처리해 준 후, view 를 호출한 뒤, 바로 http 응답을 포맷팅해서 내보내는 순서를 지켜주기 위함</strong>이다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">MIDDLEWARE <span style="color:#f92672">=</span> [
+    <span style="color:#e6db74">&#39;django.middleware.security.SecurityMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.middleware.common.CommonMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;</span>,
+    <span style="color:#e6db74">&#39;PYTHONPATH_TO_MIDDLEWARE.ResponseFormattingMiddleware&#39;</span>,
+]
+</code></pre></div><p>(<code>PYTHONPATH_TO_MIDDLEWARE</code> 는 알아서 잘 바꿔주자)</p>
+<p>여기까지 성공적으로 완성하였으면, 다음과 같은 view 가 있을 때,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> rest_framework.views <span style="color:#f92672">import</span> APIView
+<span style="color:#f92672">from</span> rest_framework.permissions <span style="color:#f92672">import</span> AllowAny
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestAPIView</span>(APIView):
+    permission_classes <span style="color:#f92672">=</span> [AllowAny]
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self, request, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        <span style="color:#66d9ef">return</span> Response({
+            <span style="color:#e6db74">&#39;message&#39;</span>: <span style="color:#e6db74">&#39;some&#39;</span>,
+            <span style="color:#e6db74">&#39;some&#39;</span>: <span style="color:#e6db74">&#39;data&#39;</span>
+        })
+</code></pre></div><p>해당 view 로 향하는 http GET 요청을 보낼 시,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
+  <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;some&#34;</span>,
+  <span style="color:#f92672">&#34;result&#34;</span>: {
+    <span style="color:#f92672">&#34;some&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>
+  }
+}
+</code></pre></div><p>위와 같이 우리가 정해준 형식의 http 응답이 오는 것을 확인할 수가 있다!</p>
+<h1 id="마치며">마치며</h1>
+<p>장고를 공부해오면서, 커스텀 미들웨어를 만들어서 http 요청 혹은 응답을 조작할 수 있을 것이라고는 상상을 못했는데, 스터디 때 팀원분께서 이 내용을 친절하게 다루어 주셔서 너무 많은 것을 얻었고, 잊어버리고 싶지 않아서 이렇게 블로그 포스팅으로 정리하게 되었다.<br>
+<strong>역시 개발자는 잘하는 사람들을 만나서 계속 배워야 한다</strong>. 정말이지 배움은 끝이 없는 것 같다.</p>
+<p>장고와 Rest Framework 를 사용해서 개발하는 누군가가 이 포스팅을 통해서, 커스텀 미들웨어로 Http 응답을 형식화 할 수 있다는 점을 알아간다면 더할 나위 없을 것 같다.</p>
+<p>앞으로도 장고에 관한 기능들을 꾸준히 포스팅 하고 싶고, 블로그 포스팅으로나마 간접적으로 내가 배운 지식을 다른 누군가에게 공유하고 싶다.</p>
+
+
+            </div>
+            
+            <br>
+            <div class="share">
+                  
+                  <a href="" class="ssk ssk-facebook"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-twitter"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-google-plus"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-linkedin"></a>
+                  
+            </div>
+            
+            
+            <br>
+            <div class="navigation">
+                
+                <div>
+                    <img class="icon" src="https://joeyworld.github.io/img/back.svg" alt="back" />
+                    <a href="https://joeyworld.github.io/blog/django-%EC%84%A4%EC%A0%95-%EB%8D%94%EC%9A%B1-%EC%84%B8%EB%B6%80%EC%A0%81%EC%9C%BC%EB%A1%9C-%EB%B6%84%EB%A6%AC%ED%95%98%EA%B8%B0/">Django 설정 더욱 세부적으로 분리하기</a>
+                </div>
+                
+                <div style="width: 100%;"></div>
+                
+            </div>
+            
+            
+
+            
+            
+
+            
+
+            
+        </div>
+    </div>
+</div>
+
+
+
+<div class="footer column">
+    <div class="container">
+
+        
+            <div class="copyright">
+            
+            
+                <a href="https://github.com/joeyworld/joeyworld.github.io/tree/master/content/blog/django-custom-middleware.md" target="_blank">View this post on GitHub</a>
+            
+            </div>
+        
+
+        
+
+        <div class="copyright">
+
+        
+            
+                <a href="https://joeyworld.github.io/license">Copyright © 2017 Byeong Gyu Choi</a>
+            
+        
+
+        </div>
+        <div class="icons">
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+            <a href="https://facebook.com/joeyworldd" rel=me target="_blank">
+                <img class="icon" src="https://joeyworld.github.io/img/facebook.svg" alt="facebook" />
+            </a>
+        
+
+        
+            <a href="https://github.com/joeyworld" rel=me target="_blank">
+                <img class="icon" src="https://joeyworld.github.io/img/github.svg" alt="github" />
+            </a>
+        
+
+        
+
+        
+            <a href="https://www.linkedin.com/in/%eb%b3%91%ea%b7%9c-%ec%b5%9c-43290213b" rel=me target="_blank">
+                <img class="icon" src="https://joeyworld.github.io/img/linkedin.svg" alt="linkedin" />
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="mailto:bisschoi9541@gmail.com">
+                <img class="icon" src="https://joeyworld.github.io/img/email.svg" alt="email" />
+            </a>
+        
+
+        
+            <a href="https://joeyworld.github.io/index.xml">
+                <img class="icon" src="https://joeyworld.github.io/img/rss.svg" alt="rss" />
+            </a>
+        
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>
+  WebFont.load({
+    google: {
+      families: ['Raleway:400,600,700', 'Merriweather:300,300i,700,700i', 'Ubuntu+Mono:400,700']
+    }
+  });
+</script>
+
+
+
+  <script src="https://joeyworld.github.io/js/highlight.min.js" defer></script>
+  
+
+
+
+  <script src="https://joeyworld.github.io/js/progressively.min.js" defer></script>
+
+
+
+  <script src="https://joeyworld.github.io/js/social-share-kit.min.js" defer></script>
+
+
+
+
+
+
+<script>
+  window.onload = function() {
+    
+      hljs.initHighlighting();
+    
+    
+      progressively.init({delay: 30, throttle: 50});
+    
+    
+      SocialShareKit.init({
+        twitter: {
+            text: '',
+            
+        }
+      });
+    
+  };
+</script>
+
+
+
+
+</body>
+</html>
+

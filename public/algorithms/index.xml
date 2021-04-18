@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithms on JoeyLog</title>
+    <link>https://joeyworld.github.io/algorithms/</link>
+    <description>Recent content in Algorithms on JoeyLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 14 May 2018 01:31:05 +0900</lastBuildDate><atom:link href="https://joeyworld.github.io/algorithms/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>n월 m일의 요일 알아내기</title>
+      <link>https://joeyworld.github.io/algorithms/day-of-week/</link>
+      <pubDate>Mon, 14 May 2018 01:31:05 +0900</pubDate>
+      
+      <guid>https://joeyworld.github.io/algorithms/day-of-week/</guid>
+      <description>출처 : https://www.acmicpc.net/problem/1924
+문제 요약 2007년 1월 1일이 월요일이라고 할 때 n월 m일은 무슨 요일일지 알아내시오.
+문제 해결 전략 </description>
+    </item>
+    
+    <item>
+      <title>Welcome to Algorithms!</title>
+      <link>https://joeyworld.github.io/algorithms/welcome/</link>
+      <pubDate>Mon, 14 May 2018 01:09:40 +0900</pubDate>
+      
+      <guid>https://joeyworld.github.io/algorithms/welcome/</guid>
+      <description>What this is about 파이썬 개발자의 알고리즘 로그 입니다.
+그냥 제가 풀고 싶은 문제들을 풀 거에요. 그냥 아무거나.
+쉬운 문제일 수도 있고, 어려운 문제일 수도 있습니다.
+문제들의 출처는 Baekjoon 혹은 Codewars 가 될 것입니다!
+Sources 모든 소스 코드의 전체는 다음 깃허브 레포지토리 에서 열람하실 수 있습니다.
+https://github.com/gyukebox/algo
+또한, 매 포스팅 마다 전체 소스코드 링크를 걸어두겠습니다!
+(포스트 내 첨부는 소스 코드의 길이에 따라서 힘들 수가 있어요)</description>
+    </item>
+    
+  </channel>
+</rss>

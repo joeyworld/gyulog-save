@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>컨퍼런스 on JoeyLog</title>
+    <link>https://joeyworld.github.io/categories/%EC%BB%A8%ED%8D%BC%EB%9F%B0%EC%8A%A4/</link>
+    <description>Recent content in 컨퍼런스 on JoeyLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 15 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://joeyworld.github.io/categories/%EC%BB%A8%ED%8D%BC%EB%9F%B0%EC%8A%A4/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PyCon Korea 2017 참석후기</title>
+      <link>https://joeyworld.github.io/blog/pycon-korea-2017-%EC%B0%B8%EC%84%9D%ED%9B%84%EA%B8%B0/</link>
+      <pubDate>Tue, 15 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/pycon-korea-2017-%EC%B0%B8%EC%84%9D%ED%9B%84%EA%B8%B0/</guid>
+      <description>국내 최대규모 파이썬 컨퍼런스인 파이콘! 올해는 직접 가서 겪어봤습니다.
+파이콘! 이름만 들어도 무슨 행사일지 알것같은 이 행사는 파이썬 컨퍼런스이다. 국내 파이써니스타들을 대상으로 한 대규모 컨퍼런스에 올해는 나도 참석했다(나도 나름 파이써니스타라고 생각했고, 또한 파이썬을 좋아하기 때문이다).
+사실 작년까지만 해도 이런 행사가 존재하는지 조차도 몰랐는데, 올해 처음 간 파이콘에서 상상 이상의 충격을 받았다. 받은 충격을 여러분들과 공유하고자 함께 글을 쓴다.
+엄청 많은 사람 기술적인 부분에서도 충격을 많이 받았지만, 가장 충격을 받았던 건 바로 사람 수였다.</description>
+    </item>
+    
+  </channel>
+</rss>

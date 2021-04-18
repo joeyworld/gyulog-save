@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>블로그 on JoeyLog</title>
+    <link>https://joeyworld.github.io/categories/%EB%B8%94%EB%A1%9C%EA%B7%B8/</link>
+    <description>Recent content in 블로그 on JoeyLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Sun, 31 Dec 2017 15:24:54 +0000</lastBuildDate><atom:link href="https://joeyworld.github.io/categories/%EB%B8%94%EB%A1%9C%EA%B7%B8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2017년의 나, 그리고 2018년에 되고 싶은 나</title>
+      <link>https://joeyworld.github.io/blog/2017%EB%85%84%EC%9D%98-%EB%82%98-%EA%B7%B8%EB%A6%AC%EA%B3%A0-2018%EB%85%84%EC%97%90-%EB%90%98%EA%B3%A0-%EC%8B%B6%EC%9D%80-%EB%82%98/</link>
+      <pubDate>Sun, 31 Dec 2017 15:24:54 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/2017%EB%85%84%EC%9D%98-%EB%82%98-%EA%B7%B8%EB%A6%AC%EA%B3%A0-2018%EB%85%84%EC%97%90-%EB%90%98%EA%B3%A0-%EC%8B%B6%EC%9D%80-%EB%82%98/</guid>
+      <description>비록 지금은 저 자신을 &amp;ldquo;개발자&amp;rdquo; 라 칭하기 민망한 수준이지만, 개발자를 꿈꾸는 대학생으로써 저의 2017년 회고를 작성해보았습니다. 이 회고를 통하여 2018년에는 한층 더 성장한 모습을 볼 수 있으면 좋겠네요.
+나에게 있어 2017년을 세 문장으로 요약하자면 다음과 같이 말할 수 있겠다.
+ 아는 건 많았지만 실제로 할 줄 아는 게 없었기에, 실제로 할 줄 알려고 발버둥쳤지만, 거듭된 실패를 경험했고 한계를 경험했지만, 좋은 사람들을 많이 만난 해  아는 건 많았지만 실제로 할 줄 아는 건&amp;hellip; Python, django, flask, Django Rest Framework JavaScript, TypeScript, React, Node, Progressive Web App Numpy, Scipy, Pandas, Tensorflow, Keras, PyTorch Serverless, AWS, CI 위의 단어들은, 바로 이 글을 쓰고 있는 현재 내가 &amp;ldquo;알고 있는&amp;rdquo; 기술들이다.</description>
+    </item>
+    
+    <item>
+      <title>GyuLog 제작 후기</title>
+      <link>https://joeyworld.github.io/blog/gyulog-%EC%A0%9C%EC%9E%91-%ED%9B%84%EA%B8%B0/</link>
+      <pubDate>Wed, 09 Aug 2017 15:24:54 +0000</pubDate>
+      
+      <guid>https://joeyworld.github.io/blog/gyulog-%EC%A0%9C%EC%9E%91-%ED%9B%84%EA%B8%B0/</guid>
+      <description>드디어 블로그를 배포하고, 첫 포스트를 쓰게 되었다!
+미루고 미루던 계획을 꺼내오기까지 사실 &amp;ldquo;블로그를 만들자!&amp;rdquo; 하고 머릿속에 계획한 것은 작년 겨울방학이었다. 작년 가을부터 여러 개발자 모임에 참석했었는데, 모임에서 알게 된 개발자분들 중 상당수가 개인 블로그를 운영하시는 것을 보고, 블로그를 만들어야겠다고 생각만 했다. 아직 아무것도 모르는 초보였으니깐 겨울방학이면 다 만들 수 있겠지? 하고 패기넘치게 생각했지만&amp;hellip;
+알아야 할 것들이 너무 많음을 깨닫다 그렇게 블로그를 만들겠다는 결심을 하고, 블로그를 만들 수 있는 여러 가지 방법들을 찾아보다가 문득 깃허브 블로그가 눈에 들어왔다.</description>
+    </item>
+    
+  </channel>
+</rss>
