@@ -216,7 +216,9 @@ Django 2.0 이 12 월 2 일 자로 정식 출시 되었습니다! 그런데 왜 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://joeyworld.github.io/home/</guid>
-      <description>Joey&amp;rsquo;s Daydream Python, Javascript, Typescript 를 합니다. React, Node, Django 를 자주 사용합니다. 머신러닝, 특히 자연어처리 분야에 관심이 매우 많습니다.</description>
+      <description>Joey&amp;rsquo;s Daydream Python, Javascript, Typescript 를 합니다.
+React, Node, Django 를 자주 사용합니다.
+머신러닝, 특히 자연어처리 분야에 관심이 매우 많습니다.</description>
     </item>
     
   </channel>
