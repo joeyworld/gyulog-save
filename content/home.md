@@ -2,7 +2,8 @@
 title = "Home"
 +++
 
-# Gyu's Daydream
+# Joey's Daydream
 
-배워서 남 주기를 좋아하는,  
-리액트와 장고를 사랑하는 웹 개발자의 몽상로그
+Python, Javascript, Typescript 를 합니다.
+React, Node, Django 를 자주 사용합니다.
+머신러닝, 특히 자연어처리 분야에 관심이 매우 많습니다.
