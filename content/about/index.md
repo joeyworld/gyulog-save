@@ -16,33 +16,32 @@ Trying a bit of TypeScript!
 ## Contact
 
 - Email : <mailto:bisschoi9541@gmail.com>
-- Github : https://github.com/gyukebox
-
+- Github : https://github.com/joeyworld
 
 ## Profile
 
-| 활동                                       | 기간    |
-| ------------------------------------------ | ------- |
+| 활동                                       | 기간     |
+| ------------------------------------------ | -------- |
 | 디프만 - 디자이너와 프로그래머가 만났을 때 | 2017.9 ~ |
 | 건국대학교 컴퓨터공학과                    | 2016.3 ~ |
 
 ## Technologies
 
-* Python
-  * Django
-  * Django Rest Framework
-* JavaScript
-  * Node.js
-  * Express
-  * React.js
-* TypeScript
-* Server
-  * AWS - EC2+S3+RDS, Elastic Beanstalk, Lambda, CodeCommit
-  * Linux
-* Testing
-  * Travis CI
-* Version Control
-  * Git+GitHub
+- Python
+  - Django
+  - Django Rest Framework
+- JavaScript
+  - Node.js
+  - Express
+  - React.js
+- TypeScript
+- Server
+  - AWS - EC2+S3+RDS, Elastic Beanstalk, Lambda, CodeCommit
+  - Linux
+- Testing
+  - Travis CI
+- Version Control
+  - Git+GitHub
 
 ## Projects
 
@@ -63,7 +62,7 @@ Trying a bit of TypeScript!
 
 ### 2. Timbre
 
-성우 - 클라이언트 간의 플랫폼 서비스. 
+성우 - 클라이언트 간의 플랫폼 서비스.
 
 - **맡은 역할** : 백엔드 API 서버 구축, 프론트엔드 클라이언트 구축
 - **사용한 기술** :
@@ -80,4 +79,3 @@ Trying a bit of TypeScript!
     - Slack
     - Trello
 - **Source** : [GitHub](https://github.com/gyukebox/timbre-web)
-
